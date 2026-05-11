@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Recipe Data Platform - Technical Deep Dive | </title>
+<meta name="keywords" content="">
+<meta name="description" content="A detailed engineering breakdown of the Recipe Data Platform architecture, component responsibilities, tradeoffs, and production-readiness roadmap.">
+<meta name="author" content="">
+<link rel="canonical" href="/projects/recipe-data-platform-technical/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.27b0702ea6aae265b70f766bd7c0d800cf4dc5e2570e495b436c65fc34dc87d2.css" integrity="sha256-J7BwLqaq4mW3D3Zr18DYAM9NxeJXDklbQ2xl/DTch9I=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="/projects/recipe-data-platform-technical/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="/projects/recipe-data-platform-technical/">
+  <meta property="og:title" content="Recipe Data Platform - Technical Deep Dive">
+  <meta property="og:description" content="A detailed engineering breakdown of the Recipe Data Platform architecture, component responsibilities, tradeoffs, and production-readiness roadmap.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-05-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-05-11T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Recipe Data Platform - Technical Deep Dive">
+<meta name="twitter:description" content="A detailed engineering breakdown of the Recipe Data Platform architecture, component responsibilities, tradeoffs, and production-readiness roadmap.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Projects",
+      "item": "/projects/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Recipe Data Platform - Technical Deep Dive",
+      "item": "/projects/recipe-data-platform-technical/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Recipe Data Platform - Technical Deep Dive",
+  "name": "Recipe Data Platform - Technical Deep Dive",
+  "description": "A detailed engineering breakdown of the Recipe Data Platform architecture, component responsibilities, tradeoffs, and production-readiness roadmap.",
+  "keywords": [
+    
+  ],
+  "articleBody": "TikTok Recipe Intelligence - Technical Deep Dive Technical Intent This project was built to show a realistic data engineering architecture around social media recipe intelligence. The stack is intentionally broader than a minimal solution because the goal is to demonstrate how different data platform components work together and where each one belongs.\nThe key architectural principle is separation of responsibility:\nKafka handles events. Snowflake stores analytical data. Bronze/Silver/Gold separates raw, enriched, and consumption-ready layers. OpenRouter provides semantic enrichment. dbt creates serving models. PySpark computes batch analytics. Airflow orchestrates jobs. FastAPI serves curated data. Streamlit gives an interactive analytics surface. Docker makes the platform reproducible locally. Snowflake Why I Used It Snowflake is the central analytical warehouse of the project. It is a strong fit because the project needs a cloud data warehouse that can store raw records, enriched records, serving views, and analytics tables in a clean schema structure.\nWhat It Provides Here Snowflake provides:\na durable storage layer for all pipeline outputs; separate schemas for Bronze, Silver, Gold, and Control data; SQL-based modeling and querying; a shared source of truth for dbt, Spark, FastAPI, and Streamlit; easy integration with Python connectors and Spark connectors. How It Is Used The warehouse is organized into schemas:\nBRONZE stores raw TikTok recipe records. SILVER stores LLM-enriched and standardized recipe records. GOLD stores serving views and analytics tables. CONTROL stores operational state such as seen TikTok videos. The key tables include:\nBRONZE.BRONZE_TIKTOK_RECIPES SILVER.SILVER_TIKTOK_RECIPES GOLD.GOLD_API_RECIPE_CATALOG GOLD.GOLD_STREAMLIT_RECIPE_CATALOG GOLD.RECIPE_ANALYTICS_SUMMARY GOLD.RECIPE_ANALYTICS_BY_CUISINE GOLD.RECIPE_ANALYTICS_BY_INGREDIENT GOLD.RECIPE_ANALYTICS_BY_LANGUAGE GOLD.RECIPE_ANALYTICS_BY_MODEL What It Demonstrates This demonstrates data warehouse design, schema separation, idempotent writes, downstream consumption patterns, and integration with multiple compute tools.\nBronze / Silver / Gold Modeling Why I Used It The medallion pattern makes the pipeline easier to understand and defend. Each layer answers a different question:\nBronze: what did we receive? Silver: what did we understand from it? Gold: what can consumers use? Bronze Bronze stores raw or near-raw source records. It keeps the original title, description, TikTok URL, source file, source metadata, raw payload, and record hash.\nThe purpose of Bronze is traceability. If an enrichment result looks wrong, I can go back to the original record and understand what the model received.\nSilver Silver stores standardized and enriched records. The LLM extracts:\nlanguage; vegetarian classification; cuisine style; main ingredient. Silver also stores processing confidence, model name, raw LLM response, and record hash.\nThe purpose of Silver is semantic structure. This is where unstructured social content becomes analytical data.\nGold Gold stores consumption-oriented models:\nAPI catalog; Streamlit catalog; Spark analytics aggregates. The purpose of Gold is usability. API routes and dashboards should not depend on raw operational tables.\nWhat It Demonstrates This demonstrates clean data modeling, separation of concerns, traceability, and the ability to design data products from raw data.\nKafka Why I Used It Kafka is used to represent the event-driven part of the architecture. TikTok creator monitoring is naturally event-based: when a new video is detected, a new event can be emitted.\nEven though the local dataset is small, Kafka is important because it shows how the platform could scale to more sources and more asynchronous ingestion flows.\nWhat It Provides Here Kafka provides:\ndecoupling between detection and ingestion; a normalized event stream for new videos; a future path for multi-platform ingestion; a realistic streaming component in the architecture. How It Is Used The TikTok monitor publishes events to a topic such as new_tiktok_video_detected. A Kafka consumer reads the events, normalizes them, and merges them into Snowflake Bronze.\nThe project distinguishes two Kafka addresses:\nlocalhost:19092 for host-machine commands; kafka:29092 for container-to-container communication. What It Demonstrates This demonstrates event-driven design, producer/consumer separation, schema normalization, and awareness of Docker networking.\nTikTok Monitor Why I Used It The TikTok monitor makes the project feel connected to a real source rather than only a static CSV. It watches configured creators, detects recent videos, and emits events for new content.\nWhat It Provides Here The monitor provides:\na source connector pattern; creator-based content discovery; event publication to Kafka; deduplication through a CONTROL.SEEN_TIKTOK_VIDEOS table; a foundation for future Instagram Reels or YouTube Shorts connectors. Design Note TikTok scraping is fragile by nature. Sessions, msToken, browser mode, bot detection, and TikTok page behavior can change. The project treats this component as a realistic but best-effort ingestion source.\nWhat It Demonstrates This demonstrates source ingestion design, operational state tracking, async client usage, browser automation constraints, and practical handling of unstable external sources.\nOpenRouter / LLM Enrichment Why I Used It The raw TikTok descriptions are unstructured. Traditional parsing would be brittle because captions vary widely by language, tone, format, and completeness.\nAn LLM is useful here because the enrichment task is semantic:\nidentify the language; infer whether a recipe is vegetarian; infer a cuisine style; identify the main ingredient. What It Provides Here The LLM turns messy text into structured fields that downstream analytics can use.\nThe expected response shape is:\n{ \"lang\": \"en\", \"is_veg\": false, \"cuisine\": \"italian\", \"ingredient\": \"pasta\" } The parser accepts:\na direct JSON object; a single-item list containing one object; short keys like lang; business keys like recipe_language. Reliability Work The enrichment script validates model responses with Pydantic. A previous bug caused valid dictionaries to be rejected because the code normalized the payload but validated the original raw object. That has been corrected with a dedicated normalize_llm_enrichment function.\nWhat It Demonstrates This demonstrates LLM integration in a data pipeline, schema validation, retry handling, confidence scoring, and the difference between model output and trusted warehouse data.\ndbt Why I Used It dbt is used for SQL-based transformations and serving models. It is the right tool for clear, versioned transformations that sit close to the warehouse.\nWhat It Provides Here dbt provides:\na staging model over Silver; deduplication logic; clean Gold views for API and Streamlit; a transformation layer that is easy to test and document. How It Is Used Current models include:\nstg_silver_tiktok_recipes gold_tiktok_recipe_catalog gold_api_recipe_catalog gold_streamlit_recipe_catalog The staging model deduplicates records by raw_id and keeps the latest processed version. The Gold models rename and select fields for specific consumers.\nWhat It Demonstrates This demonstrates analytics engineering practices: source definitions, staging models, marts, consumer-specific views, and a clean SQL transformation layer.\nPySpark Why I Used It Spark is used for heavier batch analytics. In this project, Spark is not replacing dbt. It has a different role: computing aggregate analytics from the Silver layer and writing result tables back to Snowflake.\nThis distinction is important. dbt creates serving views. Spark demonstrates distributed batch processing.\nWhat It Provides Here Spark computes:\ncatalog summary metrics; recipes by cuisine; recipes by ingredient; recipes by language; recipes by LLM model. The outputs are written to Gold tables such as:\nRECIPE_ANALYTICS_SUMMARY RECIPE_ANALYTICS_BY_CUISINE RECIPE_ANALYTICS_BY_INGREDIENT RECIPE_ANALYTICS_BY_LANGUAGE RECIPE_ANALYTICS_BY_MODEL What It Demonstrates This demonstrates Spark/Snowflake integration, batch analytics design, aggregation logic, and the ability to use multiple transformation tools for different purposes.\nAirflow Why I Used It Airflow orchestrates the pipeline. It does not host the API or dashboard. Its job is to coordinate batch steps and make pipeline execution visible.\nWhat It Provides Here Airflow provides:\nscheduled pipeline execution; retries; task dependency graphs; operational visibility; separation between orchestration and service hosting. DAGs The project has multiple DAGs:\ntiktok_recipe_intelligence_pipeline: Bronze ingestion, Silver enrichment, dbt Gold. tiktok_analytics_pipeline: Silver enrichment and Spark analytics. tiktok_creator_monitor_pipeline: TikTok monitor, Kafka consumer, Silver enrichment, dbt Gold. What It Demonstrates This demonstrates orchestration, dependency management, local Airflow deployment, and awareness that Airflow should trigger jobs rather than behave like a permanent application server.\nFastAPI Why I Used It FastAPI exposes the curated Gold catalog as an API. This proves that the pipeline produces data that can be consumed by applications, not only viewed in notebooks or dashboards.\nWhat It Provides Here The API provides:\n/health for Snowflake connectivity; /recipes for filtered recipe retrieval; /recipes/filters for UI filter values; /recipes/{raw_id} for single-record lookup. The API reads from GOLD_API_RECIPE_CATALOG, not from Bronze or raw Silver tables.\nWhat It Demonstrates This demonstrates API serving, parameterized SQL queries, separation between warehouse models and application routes, and deployment through Docker.\nStreamlit Why I Used It Streamlit gives the project an interactive analytics layer. It lets a reviewer explore the enriched data without writing SQL or calling API endpoints manually.\nWhat It Provides Here The Streamlit app now includes:\ndashboard KPIs; filters for language, cuisine, ingredient, LLM model, vegetarian status, confidence, and text search; charts for cuisines, languages, ingredients, and model usage; recipe cards with TikTok links and enrichment metadata; full tabular exploration; Spark analytics visualizations when the aggregate tables exist; data quality checks for unknown, missing, and low-confidence values; Bronze/Silver/Gold layer counts when available. What It Demonstrates This demonstrates data product thinking. The dashboard is not only a table; it helps inspect catalog coverage, enrichment quality, and analytics outputs.\nDocker and Docker Compose Why I Used It The project uses Docker Compose to make a multi-service data platform runnable locally. A reviewer should be able to clone the repo, configure environment variables, and start the platform without manually installing every service.\nWhat It Provides Here Docker Compose runs:\nPostgres for Airflow metadata; Airflow webserver and scheduler; Kafka and Zookeeper; Spark analytics container; TikTok monitor container; FastAPI container; Streamlit container; Portainer. What It Demonstrates This demonstrates local platform engineering, container networking, service composition, environment-based configuration, and reproducible development workflows.\nImprovement Path The next production-grade improvement is to replace runtime pip install commands with custom images:\nAirflow image with all DAG dependencies; API image with FastAPI dependencies; Streamlit image with dashboard dependencies; Spark image with the Snowflake connector setup. Portainer Why I Used It Portainer is included to make the local Docker stack easier to inspect. It is useful in a portfolio project because it helps visualize running services and debug container status.\nWhat It Provides Here Portainer provides:\ncontainer visibility; logs and status inspection; easier local debugging; a UI for the Docker environment. What It Demonstrates This demonstrates comfort with operational tooling around containers, not only writing pipeline code.\nConfiguration Management Why It Matters The project depends on external systems: Snowflake, OpenRouter, Kafka, Airflow, and optionally TikTok. Hardcoding credentials or environment-specific values would make the project unsafe and hard to reuse.\nHow It Is Handled The project uses:\n.env for local secrets and configuration; .env.example as the documented template; environment variables in Docker Compose; configurable Snowflake schema names; separate Kafka bootstrap settings for host and container contexts. What It Demonstrates This demonstrates secure configuration patterns, portability, and awareness of local vs container execution contexts.\nTesting and Smoke Checks Why I Added It Because this is a multi-service project, not every failure appears in one place. A notebook-based smoke test makes it possible to validate components independently.\nWhat It Covers The smoke test notebook covers:\nenvironment variables; Docker Compose configuration; Snowflake connectivity; Bronze/Silver/Gold table visibility; LLM parser behavior without network calls; dbt command wiring; API health; Streamlit availability; Kafka bootstrap sanity; Spark command template. What It Demonstrates This demonstrates practical debugging and component-level validation for a distributed local data stack.\nKey Engineering Tradeoffs Keeping Kafka Kafka is not strictly necessary for a small local dataset, but it is valuable because the project is designed as an extensible social content platform. Keeping Kafka makes the event-driven architecture visible.\nKeeping Spark Spark is not strictly necessary for small aggregate tables, but it demonstrates batch analytics and Snowflake/Spark integration. It is positioned as complementary to dbt, not as a replacement.\nKeeping Airflow Airflow is not needed for one manual script, but it is appropriate for orchestrating repeatable data jobs and showing operational visibility.\nTreating TikTok as Best Effort TikTok scraping is unstable. The project keeps it because it is realistic and useful, but it also supports CSV ingestion so the platform can still be demonstrated without live scraping.\nInterview Talking Points In an interview, I would highlight:\nwhy I separated Bronze, Silver, and Gold; how LLM output is validated before entering Silver; why dbt and Spark both exist but serve different purposes; how Kafka enables future multi-platform ingestion; how Airflow orchestrates jobs without hosting permanent services; how API and Streamlit consume Gold models instead of raw tables; what I would improve next for production readiness; how I debugged real issues such as invalid LLM schema handling and Docker/Airflow/Spark orchestration. Production Readiness Roadmap The current project is portfolio-grade and local-first. The next steps toward stronger production readiness are:\nBuild custom Docker images and remove runtime dependency installation. Add dbt tests and run them in Airflow. Add unit tests for parser and event normalization logic. Add API response models and stricter error handling. Add CI checks for Python syntax, dbt parsing, and Docker Compose validation. Add a demo mode that does not require live TikTok access. Add monitoring around enrichment failure rates and low-confidence records. Add incremental or snapshot strategy for Spark analytics if historical trends are needed. Final Technical Summary TikTok Recipe Intelligence is a compact but complete data platform. It uses the right tools for distinct jobs: Kafka for events, Snowflake for storage, LLMs for semantic enrichment, dbt for serving transformations, Spark for batch analytics, Airflow for orchestration, FastAPI for API access, Streamlit for exploration, and Docker for local reproducibility.\nThe project is valuable as a portfolio piece because it shows not only tool familiarity, but architectural judgment: each component has a reason to exist, each layer has a clear responsibility, and the system can be explained from raw ingestion to final user-facing data product.\n",
+  "wordCount" : "2224",
+  "inLanguage": "en",
+  "datePublished": "2026-05-11T00:00:00Z",
+  "dateModified": "2026-05-11T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/projects/recipe-data-platform-technical/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<article class="post-single fz-project-page">
+  <header class="post-header fz-project-hero">
+    <div class="fz-pill">PROJECT</div>
+    <h1 class="post-title">Recipe Data Platform - Technical Deep Dive</h1>
+    <div class="post-description">A detailed engineering breakdown of the Recipe Data Platform architecture, component responsibilities, tradeoffs, and production-readiness roadmap.</div>
+    
+    <div class="fz-tags">
+      <span>Snowflake</span><span>Kafka</span><span>Airflow</span><span>dbt</span><span>Spark</span><span>FastAPI</span><span>Streamlit</span><span>Docker</span>
+    </div>
+    
+    
+    <div class="fz-actions fz-project-actions">
+      <a class="fz-btn" href="https://github.com/fayssalz59/social-recipe-intelligence">GitHub</a>
+      <a class="fz-btn" href="https://recipe.fayssal-zeggar.com">Live demo</a>
+      
+    </div>
+    
+  </header>
+
+  
+  <section class="fz-section fz-project-block">
+    <div class="fz-section-heading">
+      <span>ARCHITECTURE OVERVIEW</span>
+      <h2>Readable in seconds, detailed enough for a technical discussion.</h2>
+      <p>The project separates raw ingestion, trusted warehouse layers, transformation, analytics, and user-facing delivery.</p>
+    </div>
+    <div class="fz-architecture">
+      <div>Sources</div>
+      <div>Kafka / Batch</div>
+      <div>Snowflake Bronze</div>
+      <div>Silver + LLM</div>
+      <div>dbt / Spark Gold</div>
+      <div>API + Dashboard</div>
+    </div>
+  </section>
+
+  <section class="fz-section fz-grid fz-grid--3">
+    <article class="fz-card">
+      <h3>Problem</h3>
+      <p>A portfolio data platform can easily become a tool list unless each component has a clear responsibility.</p>
+    </article>
+    <article class="fz-card">
+      <h3>Solution</h3>
+      <p>This technical deep dive explains why Kafka, Snowflake, LLM enrichment, dbt, Spark, Airflow, FastAPI, Streamlit, and Docker each exist in the system.</p>
+    </article>
+    <article class="fz-card">
+      <h3>Result</h3>
+      <p>The page gives senior reviewers a concrete view of architecture decisions, validation work, tradeoffs, and next production-readiness steps.</p>
+    </article>
+  </section>
+  
+
+  <div class="post-content"><h1 id="tiktok-recipe-intelligence---technical-deep-dive">TikTok Recipe Intelligence - Technical Deep Dive</h1>
+<h2 id="technical-intent">Technical Intent</h2>
+<p>This project was built to show a realistic data engineering architecture around social media recipe intelligence. The stack is intentionally broader than a minimal solution because the goal is to demonstrate how different data platform components work together and where each one belongs.</p>
+<p>The key architectural principle is separation of responsibility:</p>
+<ul>
+<li>Kafka handles events.</li>
+<li>Snowflake stores analytical data.</li>
+<li>Bronze/Silver/Gold separates raw, enriched, and consumption-ready layers.</li>
+<li>OpenRouter provides semantic enrichment.</li>
+<li>dbt creates serving models.</li>
+<li>PySpark computes batch analytics.</li>
+<li>Airflow orchestrates jobs.</li>
+<li>FastAPI serves curated data.</li>
+<li>Streamlit gives an interactive analytics surface.</li>
+<li>Docker makes the platform reproducible locally.</li>
+</ul>
+<h2 id="snowflake">Snowflake</h2>
+<h3 id="why-i-used-it">Why I Used It</h3>
+<p>Snowflake is the central analytical warehouse of the project. It is a strong fit because the project needs a cloud data warehouse that can store raw records, enriched records, serving views, and analytics tables in a clean schema structure.</p>
+<h3 id="what-it-provides-here">What It Provides Here</h3>
+<p>Snowflake provides:</p>
+<ul>
+<li>a durable storage layer for all pipeline outputs;</li>
+<li>separate schemas for Bronze, Silver, Gold, and Control data;</li>
+<li>SQL-based modeling and querying;</li>
+<li>a shared source of truth for dbt, Spark, FastAPI, and Streamlit;</li>
+<li>easy integration with Python connectors and Spark connectors.</li>
+</ul>
+<h3 id="how-it-is-used">How It Is Used</h3>
+<p>The warehouse is organized into schemas:</p>
+<ul>
+<li><code>BRONZE</code> stores raw TikTok recipe records.</li>
+<li><code>SILVER</code> stores LLM-enriched and standardized recipe records.</li>
+<li><code>GOLD</code> stores serving views and analytics tables.</li>
+<li><code>CONTROL</code> stores operational state such as seen TikTok videos.</li>
+</ul>
+<p>The key tables include:</p>
+<ul>
+<li><code>BRONZE.BRONZE_TIKTOK_RECIPES</code></li>
+<li><code>SILVER.SILVER_TIKTOK_RECIPES</code></li>
+<li><code>GOLD.GOLD_API_RECIPE_CATALOG</code></li>
+<li><code>GOLD.GOLD_STREAMLIT_RECIPE_CATALOG</code></li>
+<li><code>GOLD.RECIPE_ANALYTICS_SUMMARY</code></li>
+<li><code>GOLD.RECIPE_ANALYTICS_BY_CUISINE</code></li>
+<li><code>GOLD.RECIPE_ANALYTICS_BY_INGREDIENT</code></li>
+<li><code>GOLD.RECIPE_ANALYTICS_BY_LANGUAGE</code></li>
+<li><code>GOLD.RECIPE_ANALYTICS_BY_MODEL</code></li>
+</ul>
+<h3 id="what-it-demonstrates">What It Demonstrates</h3>
+<p>This demonstrates data warehouse design, schema separation, idempotent writes, downstream consumption patterns, and integration with multiple compute tools.</p>
+<h2 id="bronze--silver--gold-modeling">Bronze / Silver / Gold Modeling</h2>
+<h3 id="why-i-used-it-1">Why I Used It</h3>
+<p>The medallion pattern makes the pipeline easier to understand and defend. Each layer answers a different question:</p>
+<ul>
+<li>Bronze: what did we receive?</li>
+<li>Silver: what did we understand from it?</li>
+<li>Gold: what can consumers use?</li>
+</ul>
+<h3 id="bronze">Bronze</h3>
+<p>Bronze stores raw or near-raw source records. It keeps the original title, description, TikTok URL, source file, source metadata, raw payload, and record hash.</p>
+<p>The purpose of Bronze is traceability. If an enrichment result looks wrong, I can go back to the original record and understand what the model received.</p>
+<h3 id="silver">Silver</h3>
+<p>Silver stores standardized and enriched records. The LLM extracts:</p>
+<ul>
+<li>language;</li>
+<li>vegetarian classification;</li>
+<li>cuisine style;</li>
+<li>main ingredient.</li>
+</ul>
+<p>Silver also stores processing confidence, model name, raw LLM response, and record hash.</p>
+<p>The purpose of Silver is semantic structure. This is where unstructured social content becomes analytical data.</p>
+<h3 id="gold">Gold</h3>
+<p>Gold stores consumption-oriented models:</p>
+<ul>
+<li>API catalog;</li>
+<li>Streamlit catalog;</li>
+<li>Spark analytics aggregates.</li>
+</ul>
+<p>The purpose of Gold is usability. API routes and dashboards should not depend on raw operational tables.</p>
+<h3 id="what-it-demonstrates-1">What It Demonstrates</h3>
+<p>This demonstrates clean data modeling, separation of concerns, traceability, and the ability to design data products from raw data.</p>
+<h2 id="kafka">Kafka</h2>
+<h3 id="why-i-used-it-2">Why I Used It</h3>
+<p>Kafka is used to represent the event-driven part of the architecture. TikTok creator monitoring is naturally event-based: when a new video is detected, a new event can be emitted.</p>
+<p>Even though the local dataset is small, Kafka is important because it shows how the platform could scale to more sources and more asynchronous ingestion flows.</p>
+<h3 id="what-it-provides-here-1">What It Provides Here</h3>
+<p>Kafka provides:</p>
+<ul>
+<li>decoupling between detection and ingestion;</li>
+<li>a normalized event stream for new videos;</li>
+<li>a future path for multi-platform ingestion;</li>
+<li>a realistic streaming component in the architecture.</li>
+</ul>
+<h3 id="how-it-is-used-1">How It Is Used</h3>
+<p>The TikTok monitor publishes events to a topic such as <code>new_tiktok_video_detected</code>. A Kafka consumer reads the events, normalizes them, and merges them into Snowflake Bronze.</p>
+<p>The project distinguishes two Kafka addresses:</p>
+<ul>
+<li><code>localhost:19092</code> for host-machine commands;</li>
+<li><code>kafka:29092</code> for container-to-container communication.</li>
+</ul>
+<h3 id="what-it-demonstrates-2">What It Demonstrates</h3>
+<p>This demonstrates event-driven design, producer/consumer separation, schema normalization, and awareness of Docker networking.</p>
+<h2 id="tiktok-monitor">TikTok Monitor</h2>
+<h3 id="why-i-used-it-3">Why I Used It</h3>
+<p>The TikTok monitor makes the project feel connected to a real source rather than only a static CSV. It watches configured creators, detects recent videos, and emits events for new content.</p>
+<h3 id="what-it-provides-here-2">What It Provides Here</h3>
+<p>The monitor provides:</p>
+<ul>
+<li>a source connector pattern;</li>
+<li>creator-based content discovery;</li>
+<li>event publication to Kafka;</li>
+<li>deduplication through a <code>CONTROL.SEEN_TIKTOK_VIDEOS</code> table;</li>
+<li>a foundation for future Instagram Reels or YouTube Shorts connectors.</li>
+</ul>
+<h3 id="design-note">Design Note</h3>
+<p>TikTok scraping is fragile by nature. Sessions, <code>msToken</code>, browser mode, bot detection, and TikTok page behavior can change. The project treats this component as a realistic but best-effort ingestion source.</p>
+<h3 id="what-it-demonstrates-3">What It Demonstrates</h3>
+<p>This demonstrates source ingestion design, operational state tracking, async client usage, browser automation constraints, and practical handling of unstable external sources.</p>
+<h2 id="openrouter--llm-enrichment">OpenRouter / LLM Enrichment</h2>
+<h3 id="why-i-used-it-4">Why I Used It</h3>
+<p>The raw TikTok descriptions are unstructured. Traditional parsing would be brittle because captions vary widely by language, tone, format, and completeness.</p>
+<p>An LLM is useful here because the enrichment task is semantic:</p>
+<ul>
+<li>identify the language;</li>
+<li>infer whether a recipe is vegetarian;</li>
+<li>infer a cuisine style;</li>
+<li>identify the main ingredient.</li>
+</ul>
+<h3 id="what-it-provides-here-3">What It Provides Here</h3>
+<p>The LLM turns messy text into structured fields that downstream analytics can use.</p>
+<p>The expected response shape is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;lang&#34;</span>: <span style="color:#e6db74">&#34;en&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;is_veg&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;cuisine&#34;</span>: <span style="color:#e6db74">&#34;italian&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ingredient&#34;</span>: <span style="color:#e6db74">&#34;pasta&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The parser accepts:</p>
+<ul>
+<li>a direct JSON object;</li>
+<li>a single-item list containing one object;</li>
+<li>short keys like <code>lang</code>;</li>
+<li>business keys like <code>recipe_language</code>.</li>
+</ul>
+<h3 id="reliability-work">Reliability Work</h3>
+<p>The enrichment script validates model responses with Pydantic. A previous bug caused valid dictionaries to be rejected because the code normalized the payload but validated the original raw object. That has been corrected with a dedicated <code>normalize_llm_enrichment</code> function.</p>
+<h3 id="what-it-demonstrates-4">What It Demonstrates</h3>
+<p>This demonstrates LLM integration in a data pipeline, schema validation, retry handling, confidence scoring, and the difference between model output and trusted warehouse data.</p>
+<h2 id="dbt">dbt</h2>
+<h3 id="why-i-used-it-5">Why I Used It</h3>
+<p>dbt is used for SQL-based transformations and serving models. It is the right tool for clear, versioned transformations that sit close to the warehouse.</p>
+<h3 id="what-it-provides-here-4">What It Provides Here</h3>
+<p>dbt provides:</p>
+<ul>
+<li>a staging model over Silver;</li>
+<li>deduplication logic;</li>
+<li>clean Gold views for API and Streamlit;</li>
+<li>a transformation layer that is easy to test and document.</li>
+</ul>
+<h3 id="how-it-is-used-2">How It Is Used</h3>
+<p>Current models include:</p>
+<ul>
+<li><code>stg_silver_tiktok_recipes</code></li>
+<li><code>gold_tiktok_recipe_catalog</code></li>
+<li><code>gold_api_recipe_catalog</code></li>
+<li><code>gold_streamlit_recipe_catalog</code></li>
+</ul>
+<p>The staging model deduplicates records by <code>raw_id</code> and keeps the latest processed version. The Gold models rename and select fields for specific consumers.</p>
+<h3 id="what-it-demonstrates-5">What It Demonstrates</h3>
+<p>This demonstrates analytics engineering practices: source definitions, staging models, marts, consumer-specific views, and a clean SQL transformation layer.</p>
+<h2 id="pyspark">PySpark</h2>
+<h3 id="why-i-used-it-6">Why I Used It</h3>
+<p>Spark is used for heavier batch analytics. In this project, Spark is not replacing dbt. It has a different role: computing aggregate analytics from the Silver layer and writing result tables back to Snowflake.</p>
+<p>This distinction is important. dbt creates serving views. Spark demonstrates distributed batch processing.</p>
+<h3 id="what-it-provides-here-5">What It Provides Here</h3>
+<p>Spark computes:</p>
+<ul>
+<li>catalog summary metrics;</li>
+<li>recipes by cuisine;</li>
+<li>recipes by ingredient;</li>
+<li>recipes by language;</li>
+<li>recipes by LLM model.</li>
+</ul>
+<p>The outputs are written to Gold tables such as:</p>
+<ul>
+<li><code>RECIPE_ANALYTICS_SUMMARY</code></li>
+<li><code>RECIPE_ANALYTICS_BY_CUISINE</code></li>
+<li><code>RECIPE_ANALYTICS_BY_INGREDIENT</code></li>
+<li><code>RECIPE_ANALYTICS_BY_LANGUAGE</code></li>
+<li><code>RECIPE_ANALYTICS_BY_MODEL</code></li>
+</ul>
+<h3 id="what-it-demonstrates-6">What It Demonstrates</h3>
+<p>This demonstrates Spark/Snowflake integration, batch analytics design, aggregation logic, and the ability to use multiple transformation tools for different purposes.</p>
+<h2 id="airflow">Airflow</h2>
+<h3 id="why-i-used-it-7">Why I Used It</h3>
+<p>Airflow orchestrates the pipeline. It does not host the API or dashboard. Its job is to coordinate batch steps and make pipeline execution visible.</p>
+<h3 id="what-it-provides-here-6">What It Provides Here</h3>
+<p>Airflow provides:</p>
+<ul>
+<li>scheduled pipeline execution;</li>
+<li>retries;</li>
+<li>task dependency graphs;</li>
+<li>operational visibility;</li>
+<li>separation between orchestration and service hosting.</li>
+</ul>
+<h3 id="dags">DAGs</h3>
+<p>The project has multiple DAGs:</p>
+<ul>
+<li><code>tiktok_recipe_intelligence_pipeline</code>: Bronze ingestion, Silver enrichment, dbt Gold.</li>
+<li><code>tiktok_analytics_pipeline</code>: Silver enrichment and Spark analytics.</li>
+<li><code>tiktok_creator_monitor_pipeline</code>: TikTok monitor, Kafka consumer, Silver enrichment, dbt Gold.</li>
+</ul>
+<h3 id="what-it-demonstrates-7">What It Demonstrates</h3>
+<p>This demonstrates orchestration, dependency management, local Airflow deployment, and awareness that Airflow should trigger jobs rather than behave like a permanent application server.</p>
+<h2 id="fastapi">FastAPI</h2>
+<h3 id="why-i-used-it-8">Why I Used It</h3>
+<p>FastAPI exposes the curated Gold catalog as an API. This proves that the pipeline produces data that can be consumed by applications, not only viewed in notebooks or dashboards.</p>
+<h3 id="what-it-provides-here-7">What It Provides Here</h3>
+<p>The API provides:</p>
+<ul>
+<li><code>/health</code> for Snowflake connectivity;</li>
+<li><code>/recipes</code> for filtered recipe retrieval;</li>
+<li><code>/recipes/filters</code> for UI filter values;</li>
+<li><code>/recipes/{raw_id}</code> for single-record lookup.</li>
+</ul>
+<p>The API reads from <code>GOLD_API_RECIPE_CATALOG</code>, not from Bronze or raw Silver tables.</p>
+<h3 id="what-it-demonstrates-8">What It Demonstrates</h3>
+<p>This demonstrates API serving, parameterized SQL queries, separation between warehouse models and application routes, and deployment through Docker.</p>
+<h2 id="streamlit">Streamlit</h2>
+<h3 id="why-i-used-it-9">Why I Used It</h3>
+<p>Streamlit gives the project an interactive analytics layer. It lets a reviewer explore the enriched data without writing SQL or calling API endpoints manually.</p>
+<h3 id="what-it-provides-here-8">What It Provides Here</h3>
+<p>The Streamlit app now includes:</p>
+<ul>
+<li>dashboard KPIs;</li>
+<li>filters for language, cuisine, ingredient, LLM model, vegetarian status, confidence, and text search;</li>
+<li>charts for cuisines, languages, ingredients, and model usage;</li>
+<li>recipe cards with TikTok links and enrichment metadata;</li>
+<li>full tabular exploration;</li>
+<li>Spark analytics visualizations when the aggregate tables exist;</li>
+<li>data quality checks for unknown, missing, and low-confidence values;</li>
+<li>Bronze/Silver/Gold layer counts when available.</li>
+</ul>
+<h3 id="what-it-demonstrates-9">What It Demonstrates</h3>
+<p>This demonstrates data product thinking. The dashboard is not only a table; it helps inspect catalog coverage, enrichment quality, and analytics outputs.</p>
+<h2 id="docker-and-docker-compose">Docker and Docker Compose</h2>
+<h3 id="why-i-used-it-10">Why I Used It</h3>
+<p>The project uses Docker Compose to make a multi-service data platform runnable locally. A reviewer should be able to clone the repo, configure environment variables, and start the platform without manually installing every service.</p>
+<h3 id="what-it-provides-here-9">What It Provides Here</h3>
+<p>Docker Compose runs:</p>
+<ul>
+<li>Postgres for Airflow metadata;</li>
+<li>Airflow webserver and scheduler;</li>
+<li>Kafka and Zookeeper;</li>
+<li>Spark analytics container;</li>
+<li>TikTok monitor container;</li>
+<li>FastAPI container;</li>
+<li>Streamlit container;</li>
+<li>Portainer.</li>
+</ul>
+<h3 id="what-it-demonstrates-10">What It Demonstrates</h3>
+<p>This demonstrates local platform engineering, container networking, service composition, environment-based configuration, and reproducible development workflows.</p>
+<h3 id="improvement-path">Improvement Path</h3>
+<p>The next production-grade improvement is to replace runtime <code>pip install</code> commands with custom images:</p>
+<ul>
+<li>Airflow image with all DAG dependencies;</li>
+<li>API image with FastAPI dependencies;</li>
+<li>Streamlit image with dashboard dependencies;</li>
+<li>Spark image with the Snowflake connector setup.</li>
+</ul>
+<h2 id="portainer">Portainer</h2>
+<h3 id="why-i-used-it-11">Why I Used It</h3>
+<p>Portainer is included to make the local Docker stack easier to inspect. It is useful in a portfolio project because it helps visualize running services and debug container status.</p>
+<h3 id="what-it-provides-here-10">What It Provides Here</h3>
+<p>Portainer provides:</p>
+<ul>
+<li>container visibility;</li>
+<li>logs and status inspection;</li>
+<li>easier local debugging;</li>
+<li>a UI for the Docker environment.</li>
+</ul>
+<h3 id="what-it-demonstrates-11">What It Demonstrates</h3>
+<p>This demonstrates comfort with operational tooling around containers, not only writing pipeline code.</p>
+<h2 id="configuration-management">Configuration Management</h2>
+<h3 id="why-it-matters">Why It Matters</h3>
+<p>The project depends on external systems: Snowflake, OpenRouter, Kafka, Airflow, and optionally TikTok. Hardcoding credentials or environment-specific values would make the project unsafe and hard to reuse.</p>
+<h3 id="how-it-is-handled">How It Is Handled</h3>
+<p>The project uses:</p>
+<ul>
+<li><code>.env</code> for local secrets and configuration;</li>
+<li><code>.env.example</code> as the documented template;</li>
+<li>environment variables in Docker Compose;</li>
+<li>configurable Snowflake schema names;</li>
+<li>separate Kafka bootstrap settings for host and container contexts.</li>
+</ul>
+<h3 id="what-it-demonstrates-12">What It Demonstrates</h3>
+<p>This demonstrates secure configuration patterns, portability, and awareness of local vs container execution contexts.</p>
+<h2 id="testing-and-smoke-checks">Testing and Smoke Checks</h2>
+<h3 id="why-i-added-it">Why I Added It</h3>
+<p>Because this is a multi-service project, not every failure appears in one place. A notebook-based smoke test makes it possible to validate components independently.</p>
+<h3 id="what-it-covers">What It Covers</h3>
+<p>The smoke test notebook covers:</p>
+<ul>
+<li>environment variables;</li>
+<li>Docker Compose configuration;</li>
+<li>Snowflake connectivity;</li>
+<li>Bronze/Silver/Gold table visibility;</li>
+<li>LLM parser behavior without network calls;</li>
+<li>dbt command wiring;</li>
+<li>API health;</li>
+<li>Streamlit availability;</li>
+<li>Kafka bootstrap sanity;</li>
+<li>Spark command template.</li>
+</ul>
+<h3 id="what-it-demonstrates-13">What It Demonstrates</h3>
+<p>This demonstrates practical debugging and component-level validation for a distributed local data stack.</p>
+<h2 id="key-engineering-tradeoffs">Key Engineering Tradeoffs</h2>
+<h3 id="keeping-kafka">Keeping Kafka</h3>
+<p>Kafka is not strictly necessary for a small local dataset, but it is valuable because the project is designed as an extensible social content platform. Keeping Kafka makes the event-driven architecture visible.</p>
+<h3 id="keeping-spark">Keeping Spark</h3>
+<p>Spark is not strictly necessary for small aggregate tables, but it demonstrates batch analytics and Snowflake/Spark integration. It is positioned as complementary to dbt, not as a replacement.</p>
+<h3 id="keeping-airflow">Keeping Airflow</h3>
+<p>Airflow is not needed for one manual script, but it is appropriate for orchestrating repeatable data jobs and showing operational visibility.</p>
+<h3 id="treating-tiktok-as-best-effort">Treating TikTok as Best Effort</h3>
+<p>TikTok scraping is unstable. The project keeps it because it is realistic and useful, but it also supports CSV ingestion so the platform can still be demonstrated without live scraping.</p>
+<h2 id="interview-talking-points">Interview Talking Points</h2>
+<p>In an interview, I would highlight:</p>
+<ul>
+<li>why I separated Bronze, Silver, and Gold;</li>
+<li>how LLM output is validated before entering Silver;</li>
+<li>why dbt and Spark both exist but serve different purposes;</li>
+<li>how Kafka enables future multi-platform ingestion;</li>
+<li>how Airflow orchestrates jobs without hosting permanent services;</li>
+<li>how API and Streamlit consume Gold models instead of raw tables;</li>
+<li>what I would improve next for production readiness;</li>
+<li>how I debugged real issues such as invalid LLM schema handling and Docker/Airflow/Spark orchestration.</li>
+</ul>
+<h2 id="production-readiness-roadmap">Production Readiness Roadmap</h2>
+<p>The current project is portfolio-grade and local-first. The next steps toward stronger production readiness are:</p>
+<ol>
+<li>Build custom Docker images and remove runtime dependency installation.</li>
+<li>Add dbt tests and run them in Airflow.</li>
+<li>Add unit tests for parser and event normalization logic.</li>
+<li>Add API response models and stricter error handling.</li>
+<li>Add CI checks for Python syntax, dbt parsing, and Docker Compose validation.</li>
+<li>Add a demo mode that does not require live TikTok access.</li>
+<li>Add monitoring around enrichment failure rates and low-confidence records.</li>
+<li>Add incremental or snapshot strategy for Spark analytics if historical trends are needed.</li>
+</ol>
+<h2 id="final-technical-summary">Final Technical Summary</h2>
+<p>TikTok Recipe Intelligence is a compact but complete data platform. It uses the right tools for distinct jobs: Kafka for events, Snowflake for storage, LLMs for semantic enrichment, dbt for serving transformations, Spark for batch analytics, Airflow for orchestration, FastAPI for API access, Streamlit for exploration, and Docker for local reproducibility.</p>
+<p>The project is valuable as a portfolio piece because it shows not only tool familiarity, but architectural judgment: each component has a reason to exist, each layer has a clear responsibility, and the system can be explained from raw ingestion to final user-facing data product.</p>
+</div>
+</article>
+
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="/"></a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

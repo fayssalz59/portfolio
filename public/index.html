@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.152.2"><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title></title>
+
+<meta name="description" content="Data Engineer portfolio focused on Snowflake, Python, SQL, ETL/ELT pipelines, analytics enablement, governed data access, and a complete personal data platform project.">
+<meta name="author" content="">
+<link rel="canonical" href="/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.27b0702ea6aae265b70f766bd7c0d800cf4dc5e2570e495b436c65fc34dc87d2.css" integrity="sha256-J7BwLqaq4mW3D3Zr18DYAM9NxeJXDklbQ2xl/DTch9I=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="/">
+  <meta property="og:title" content="Fayssal Zeggar">
+  <meta property="og:description" content="Data Engineer portfolio focused on Snowflake, Python, SQL, ETL/ELT pipelines, analytics enablement, governed data access, and a complete personal data platform project.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fayssal Zeggar">
+<meta name="twitter:description" content="Data Engineer portfolio focused on Snowflake, Python, SQL, ETL/ELT pipelines, analytics enablement, governed data access, and a complete personal data platform project.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "/",
+  "description": "",
+  "logo": "/favicon.ico",
+  "sameAs": [
+      
+  ]
+}
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<div class="fz-home">
+  <section class="fz-section fz-hero">
+  <div class="fz-hero__content">
+    <div class="fz-pill">Data Engineer | Snowflake, Python, SQL</div>
+    <h1>Fayssal Zeggar</h1>
+    <p class="fz-lead">Data engineer building governed Snowflake pipelines and analytics-ready data products.</p>
+    <p class="fz-sublead"></p>
+    <div class="fz-actions">
+      <a class="fz-btn fz-btn--primary" href="/projects/recipe-data-platform/">View case study</a>
+      <a class="fz-btn" href="">Live demo</a>
+      <a class="fz-btn" href="mailto:">Contact</a>
+    </div>
+    <div class="fz-tags">
+      <span>Snowflake</span>
+      <span>Python</span>
+      <span>SQL</span>
+      <span>ETL / ELT</span>
+      <span>Power BI</span>
+      <span>Dataiku</span>
+    </div>
+    <div class="fz-contact-line">
+      <span></span>
+      <a href="">LinkedIn</a>
+      <a href="mailto:"></a>
+    </div>
+  </div>
+  <div class="fz-hero__proof">
+    <article>
+      <span>Manufacturing data scale</span>
+      <strong>6,000</strong>
+      <p>Parameters per batch handled in pharmaceutical process data pipelines.</p>
+    </article>
+    <article>
+      <span>Migration ownership</span>
+      <strong>30</strong>
+      <p>Power BI tables and data sources migrated and restructured into Snowflake.</p>
+    </article>
+    <article>
+      <span>User enablement</span>
+      <strong>60+</strong>
+      <p>SME users supported through simpler access to Snowflake data from JMP.</p>
+    </article>
+  </div>
+</section>
+
+<section class="fz-section fz-intro-grid">
+  <article class="fz-panel fz-panel--focus">
+    <span>Current professional focus</span>
+    <h2>Reliable data engineering in regulated pharmaceutical manufacturing.</h2>
+    <p>I design and maintain Snowflake-based ETL/ELT pipelines, integrate data from APRM, MES, SAP, and LIMS, optimize SQL models, and support analytics, AI, and ML initiatives with governed data access.</p>
+  </article>
+  <article class="fz-panel">
+    <span>What senior reviewers should see quickly</span>
+    <ul class="fz-checklist">
+      <li>Professional strength in Snowflake, Python, SQL, ETL/ELT, governance, and analytics enablement.</li>
+      <li>Practical delivery with business users, SMEs, engineers, data scientists, and smart factory teams.</li>
+      <li>A separate personal project showing Kafka, Airflow, dbt, Spark, FastAPI, Streamlit, and Docker.</li>
+    </ul>
+  </article>
+</section>
+
+  
+
+<section class="fz-section">
+  <div class="fz-section-heading">
+    <span>FEATURED PROJECT</span>
+    <h2>Recipe Data Platform</h2>
+    <p>A personal project that demonstrates a full data platform from ingestion to warehouse modeling, orchestration, API serving, and dashboard exploration.</p>
+  </div>
+  
+  <article class="fz-featured">
+    <div class="fz-featured__copy">
+      <h3>Recipe Data Platform</h3>
+      <p>A personal data engineering project using Snowflake, Kafka, Airflow, dbt, Spark, FastAPI, Streamlit, and Docker to turn recipe content into structured, explorable data.</p>
+      <div class="fz-tags">
+        <span>Python</span><span>Snowflake</span><span>Kafka</span><span>Airflow</span><span>dbt</span><span>Spark</span><span>FastAPI</span><span>Streamlit</span><span>Docker</span>
+      </div>
+      <div class="fz-actions">
+        <a class="fz-btn fz-btn--primary" href="/projects/recipe-data-platform/">Case study</a>
+        <a class="fz-btn" href="/projects/recipe-data-platform-technical/">Technical deep dive</a>
+        <a class="fz-btn" href="https://github.com/fayssalz59/social-recipe-intelligence">GitHub</a>
+        <a class="fz-btn" href="https://recipe.fayssal-zeggar.com">Live demo</a>
+      </div>
+    </div>
+    <div class="fz-featured__visual">
+      <img src="/img/project-thumb.svg" alt="Recipe Data Platform architecture diagram" />
+    </div>
+  </article>
+  
+</section>
+
+  <section class="fz-section">
+  <div class="fz-section-heading">
+    <span>CAPABILITIES</span>
+    <h2>Data engineering strengths backed by current professional work.</h2>
+    <p>The focus is not a long tool list. It is the ability to move operational data into governed, reliable, analytics-ready systems.</p>
+  </div>
+  <div class="fz-grid fz-grid--3">
+    <article class="fz-card">
+      <h3>Snowflake pipelines</h3>
+      <p>Design and maintain ETL/ELT workflows for manufacturing and enterprise data, with attention to reliability, access control, and traceability.</p>
+    </article>
+    <article class="fz-card">
+      <h3>SQL modeling and optimization</h3>
+      <p>Restructure models, tune SQL, and make datasets easier for reporting, analysis, and downstream consumption.</p>
+    </article>
+    <article class="fz-card">
+      <h3>Analytics enablement</h3>
+      <p>Support Power BI, JMP, and SME workflows so users can work with trusted data without unnecessary manual extraction.</p>
+    </article>
+    <article class="fz-card fz-card--wide">
+      <h3>Integration and APIs</h3>
+      <p>Connect enterprise and manufacturing systems, use REST APIs where appropriate, and keep ingestion paths explainable.</p>
+    </article>
+    <article class="fz-card fz-card--wide">
+      <h3>Cross-functional delivery</h3>
+      <p>Translate needs from engineers, data scientists, process teams, and business stakeholders into reusable data flows.</p>
+    </article>
+  </div>
+</section>
+
+  <section class="fz-section">
+  <div class="fz-section-heading">
+    <span>DELIVERY APPROACH</span>
+    <h2>From source complexity to trusted consumption.</h2>
+    <p>My work is strongest where data has to be integrated carefully, governed properly, and made usable by real teams.</p>
+  </div>
+  <div class="fz-process">
+    <article><strong>1</strong><span>Understand source systems and constraints</span></article>
+    <article><strong>2</strong><span>Build controlled ingestion paths</span></article>
+    <article><strong>3</strong><span>Model clean warehouse layers</span></article>
+    <article><strong>4</strong><span>Validate access, quality, and performance</span></article>
+    <article><strong>5</strong><span>Deliver data through BI, APIs, or user tools</span></article>
+  </div>
+</section>
+
+  <section class="fz-section">
+  <div class="fz-section-heading">
+    <span>TECH STACK</span>
+    <h2>Clear separation between professional strengths and portfolio project tools.</h2>
+    <p>This keeps the site honest and easy to defend in a technical interview.</p>
+  </div>
+  <div class="fz-stack">
+    <article><span>Professional core</span><strong>Snowflake / SQL / Python</strong><p>Daily data engineering, modeling, ingestion, and optimization.</p></article>
+    <article><span>Analytics delivery</span><strong>Power BI / JMP / Dataiku</strong><p>Dashboards, SME access, process modeling, and data manipulation.</p></article>
+    <article><span>Delivery workflow</span><strong>GitHub / CI-CD / Argo exposure</strong><p>Code review, pipeline delivery, scheduling exposure, and YAML updates.</p></article>
+    <article><span>Cloud and APIs</span><strong>REST APIs / Azure Functions</strong><p>API-based integration and cloud prototyping from professional and R&D work.</p></article>
+    <article><span>Portfolio project</span><strong>Kafka / Airflow / dbt / Spark</strong><p>Used in the Recipe Data Platform personal project.</p></article>
+  </div>
+</section>
+
+</div>
+
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="/"></a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

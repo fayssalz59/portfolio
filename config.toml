@@ -1,0 +1,63 @@
+baseURL = "https://portfolio.fayssal-zeggar.com/"
+languageCode = "en-us"
+title = "Fayssal Zeggar - Data Engineer"
+theme = "PaperMod"
+
+enableRobotsTXT = true
+
+[params]
+  env = "production"
+  description = "Portfolio of Fayssal Zeggar, a Data Engineer focused on Snowflake, Python, SQL, ETL/ELT pipelines, analytics enablement, and governed data platforms."
+  author = "Fayssal Zeggar"
+  defaultTheme = "dark"
+  disableThemeToggle = true
+  ShowReadingTime = false
+  ShowShareButtons = false
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  hideFooter = false
+
+  [params.fayssal]
+    name = "Fayssal Zeggar"
+    role = "Data Engineer | Snowflake, Python, SQL"
+    email = "fayssal.zeggar@laposte.net"
+    location = "Toronto, Ontario, Canada"
+    linkedin = "https://linkedin.com/in/fzeggar"
+    github = "https://github.com/fayssalz59/social-recipe-intelligence"
+    portfolio = "https://portfolio.fayssal-zeggar.com"
+    demo = "https://recipe.fayssal-zeggar.com"
+    project = "https://portfolio.fayssal-zeggar.com/projects/recipe-data-platform/"
+    technical = "https://portfolio.fayssal-zeggar.com/projects/recipe-data-platform-technical/"
+    intro = "Data engineer building governed Snowflake pipelines and analytics-ready data products."
+    summary = "I work in regulated pharmaceutical manufacturing data environments, where reliability, traceability, and practical access for technical users matter as much as the pipeline code."
+
+[[params.socialIcons]]
+  name = "linkedin"
+  url = "https://linkedin.com/in/fzeggar"
+
+[[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/fayssalz59/social-recipe-intelligence"
+
+[[params.socialIcons]]
+  name = "email"
+  url = "mailto:fayssal.zeggar@laposte.net"
+
+[[menu.main]]
+  identifier = "projects"
+  name = "Projects"
+  url = "/projects/"
+  weight = 10
+
+[[menu.main]]
+  identifier = "github"
+  name = "GitHub"
+  url = "https://github.com/fayssalz59/social-recipe-intelligence"
+  weight = 20
+
+[[menu.main]]
+  identifier = "demo"
+  name = "Live Demo"
+  url = "https://recipe.fayssal-zeggar.com"
+  weight = 30

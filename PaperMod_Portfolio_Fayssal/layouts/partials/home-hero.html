@@ -1,0 +1,56 @@
+{{ $role := .Site.Params.fayssal.role | default "Data Engineer" }}
+{{ $intro := .Site.Params.fayssal.intro | default "I design reliable data pipelines, clean models, and analytics-ready systems." }}
+{{ $summary := .Site.Params.fayssal.summary | default "Portfolio focused on architecture, automation, ETL / ELT, and readable technical case studies." }}
+<section class="fz-section fz-hero">
+  <div class="fz-hero__content">
+    <div class="fz-pill">{{ $role | upper }}</div>
+    <h1>{{ $intro }}</h1>
+    <p class="fz-lead">{{ $summary }}</p>
+    <div class="fz-actions">
+      <a class="fz-btn fz-btn--primary" href="/projects/">View Projects</a>
+      <a class="fz-btn" href="mailto:{{ .Site.Params.fayssal.email }}">Contact Me</a>
+    </div>
+    <div class="fz-tags">
+      <span>Python</span>
+      <span>SQL</span>
+      <span>Snowflake</span>
+      <span>Airflow</span>
+      <span>Docker</span>
+    </div>
+    <div class="fz-metrics">
+      <article>
+        <span>Focus</span>
+        <strong>ETL / ELT</strong>
+        <p>Structured ingestion, modeling, and delivery.</p>
+      </article>
+      <article>
+        <span>Style</span>
+        <strong>Reliable</strong>
+        <p>Engineering-first execution over noise.</p>
+      </article>
+      <article>
+        <span>Goal</span>
+        <strong>Clarity</strong>
+        <p>A portfolio that feels credible and readable.</p>
+      </article>
+    </div>
+  </div>
+  <div class="fz-hero__visual">
+    <div class="fz-card fz-card--visual">
+      <div class="fz-card__header">
+        <h3>System overview</h3>
+        <p>Subtle architecture motif instead of a fake product dashboard.</p>
+      </div>
+      <div class="fz-pipeline">
+        <div>Sources</div>
+        <div>Staging</div>
+        <div>Models</div>
+        <div>Warehouse</div>
+        <div>BI</div>
+      </div>
+      <div class="fz-visual-note">
+        Architecture, pipelines, case studies, and clean project storytelling.
+      </div>
+    </div>
+  </div>
+</section>

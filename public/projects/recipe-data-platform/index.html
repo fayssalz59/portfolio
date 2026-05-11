@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Recipe Data Platform | </title>
+<meta name="keywords" content="">
+<meta name="description" content="End-to-end data engineering platform for social recipe intelligence.">
+<meta name="author" content="">
+<link rel="canonical" href="/projects/recipe-data-platform/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.27b0702ea6aae265b70f766bd7c0d800cf4dc5e2570e495b436c65fc34dc87d2.css" integrity="sha256-J7BwLqaq4mW3D3Zr18DYAM9NxeJXDklbQ2xl/DTch9I=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="/projects/recipe-data-platform/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="/projects/recipe-data-platform/">
+  <meta property="og:title" content="Recipe Data Platform">
+  <meta property="og:description" content="End-to-end data engineering platform for social recipe intelligence.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-05-11T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-05-11T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Recipe Data Platform">
+<meta name="twitter:description" content="End-to-end data engineering platform for social recipe intelligence.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Projects",
+      "item": "/projects/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Recipe Data Platform",
+      "item": "/projects/recipe-data-platform/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Recipe Data Platform",
+  "name": "Recipe Data Platform",
+  "description": "End-to-end data engineering platform for social recipe intelligence.",
+  "keywords": [
+    
+  ],
+  "articleBody": "TikTok Recipe Intelligence Project Overview TikTok Recipe Intelligence is an end-to-end data engineering and analytics platform that turns unstructured social media recipe content into structured, queryable, and explorable data.\nThe project starts from TikTok recipe videos and recipe-like captions. It ingests raw content into Snowflake, enriches descriptions with an LLM through OpenRouter, models the data through a Bronze/Silver/Gold architecture, computes analytics with PySpark, orchestrates batch jobs with Airflow, exposes curated records through FastAPI, and presents the results in a Streamlit dashboard.\nThe goal of this project is not to build a small isolated scraper. The goal is to demonstrate the shape of a modern data platform: ingestion, event streaming, warehouse modeling, semantic enrichment, orchestration, transformation, distributed analytics, API serving, dashboarding, and local reproducibility with Docker.\nWhat Problem This Project Solves Recipe content on social platforms is messy. A TikTok caption may contain a dish name, a cuisine style, a language signal, an ingredient, a vegetarian cue, or no useful metadata at all. That information is valuable, but it is not directly available in an analytical format.\nThis project transforms that unstructured content into structured data that can answer questions such as:\nWhich cuisine styles appear most often? Which ingredients dominate the recipe catalog? How many recipes are vegetarian? Which languages are present in the collected content? Which LLM model generated each enrichment? Which recipes are ready to be served through an API or dashboard? Which enriched records need review because of low confidence or unknown values? High-Level Architecture CSV seed data / TikTok creator monitor | | batch ingestion or Kafka event v Snowflake Bronze | | OpenRouter LLM enrichment v Snowflake Silver | +--\u003e dbt Gold serving views --\u003e FastAPI + Streamlit | +--\u003e PySpark analytics --\u003e Gold analytics tables | v Airflow orchestration + Docker Compose local platform Main Components The project is intentionally built with multiple realistic data platform components:\nKafka handles event-driven ingestion from the TikTok creator monitor. Snowflake stores the analytical data warehouse layers. Bronze/Silver/Gold modeling separates raw data, enriched records, and consumption-ready data. OpenRouter / LLM enrichment extracts structured recipe attributes from messy captions. dbt creates curated Gold models for the API and Streamlit dashboard. PySpark computes batch analytics tables from the Silver layer. Airflow orchestrates ingestion, enrichment, dbt, and Spark jobs. FastAPI exposes curated recipe data through clean HTTP endpoints. Streamlit provides an interactive analytics interface. Docker Compose runs the platform locally with reproducible services. Portainer makes the container stack easier to inspect during local development. Data Flow Raw content arrives\nThe project supports two ingestion paths. A CSV seed dataset can be loaded directly into Snowflake Bronze for deterministic local demos. A TikTok creator monitor can also detect new videos, publish events to Kafka, and feed the Bronze table through a Kafka consumer.\nBronze stores raw records\nThe Bronze layer stores source-level recipe records with titles, descriptions, TikTok URLs, source metadata, raw payloads, and record hashes for idempotent loading.\nSilver enriches the content\nThe enrichment job reads unprocessed Bronze rows, sends recipe descriptions to OpenRouter, validates the JSON response, and writes structured fields to Silver:\nrecipe language vegetarian flag cuisine style main ingredient processing confidence model name raw LLM response dbt builds serving views\ndbt reads Silver and creates Gold views for downstream consumers. The API gets a clean API-oriented catalog. Streamlit gets a dashboard-oriented catalog.\nSpark computes analytics\nPySpark reads the Silver table from Snowflake and writes aggregate analytics tables back to the Gold schema. These tables summarize the catalog by cuisine, ingredient, language, and model.\nProducts consume Gold\nFastAPI exposes recipes and filters. Streamlit shows KPIs, charts, recipe cards, Spark analytics, and data quality views.\nWhat I Built This project demonstrates work across the full data stack:\ndesigned a medallion architecture in Snowflake; implemented CSV ingestion into Bronze with idempotent merge logic; implemented event-driven ingestion with Kafka; created a TikTok creator monitor that emits normalized content events; integrated OpenRouter for structured LLM enrichment; hardened the LLM parser to accept valid JSON objects and single-item lists; modeled Gold serving layers with dbt; implemented Spark analytics jobs that read and write Snowflake tables; orchestrated jobs with Airflow DAGs; exposed curated data through FastAPI; built an interactive Streamlit analytics dashboard; containerized the main services with Docker Compose; documented setup, architecture, limitations, and smoke tests. Why This Is a Data Engineering Project The strongest part of this project is the system design. Each component has a clear role:\ningestion is separated from enrichment; raw data is preserved before transformation; LLM output is validated before entering Silver; dbt handles serving models; Spark handles heavier analytical aggregation; Airflow coordinates batch execution; API and dashboard read from curated Gold data, not raw tables; Docker makes the local platform reproducible. That separation makes the project realistic. It is not just a notebook, not just a dashboard, and not just an API. It is a complete pipeline with multiple serving surfaces.\nCurrent Dashboard Capabilities The Streamlit application now includes:\nglobal catalog KPIs; visible-record KPIs based on active filters; filters for language, cuisine, ingredient, model, vegetarian status, confidence, and search text; charts for cuisine distribution, language distribution, ingredient frequency, and LLM model usage; recipe cards with TikTok links and enrichment metadata; full tabular exploration; optional Spark analytics visualizations when aggregate tables exist; data quality views for unknown values, missing values, and low-confidence enrichments; warehouse layer counts for Bronze, Silver, and Gold when available. Portfolio Value This project is designed to be discussed in a technical interview. It shows that I can:\nbuild a multi-service data platform; reason about data modeling layers; integrate APIs and LLMs into batch pipelines; use Kafka for event-driven ingestion; use Snowflake as a central analytical warehouse; use dbt and Spark for different transformation needs; use Airflow for orchestration; expose data through both API and dashboard layers; package the system locally with Docker; identify and fix operational issues in a real repository. Known Tradeoffs The project is intentionally portfolio-oriented and local-first. A few choices are pragmatic rather than fully production-grade:\nsome services still install dependencies at container startup; the Spark job is triggered through a long-lived container using docker exec; TikTok scraping is inherently fragile because sessions, tokens, bot detection, and browser behavior can change; Snowflake credentials and OpenRouter keys must be supplied by the user through environment variables; the local Docker Compose setup is designed for demonstration, not high availability. These tradeoffs are documented because they are part of the engineering story. The project is not pretending to be a production platform; it is showing how a production-shaped platform can be built, tested, and improved.\nNext Improvements The next improvements are clear and realistic:\ncreate custom Docker images for Airflow, API, Streamlit, and Spark; add dbt tests for uniqueness, freshness, and accepted values; add unit tests for LLM parsing and Kafka event normalization; add a deterministic demo mode that does not depend on live TikTok scraping; add more Streamlit analytics from the Spark Gold tables; improve CI/CD readiness with linting and smoke tests; generalize the source model for Instagram Reels and YouTube Shorts. Final Result TikTok Recipe Intelligence is a complete, explainable, and extensible data engineering portfolio project. It demonstrates how raw social media content can be transformed into structured analytics and served through modern data products.\nThe project is strong because it combines realistic architecture with practical implementation: Snowflake, Kafka, Airflow, dbt, Spark, LLM enrichment, FastAPI, Streamlit, and Docker all work together toward one clear use case.\nTechnical steps For a deeper engineering breakdown, read the technical deep dive.\n",
+  "wordCount" : "1244",
+  "inLanguage": "en",
+  "datePublished": "2026-05-11T00:00:00Z",
+  "dateModified": "2026-05-11T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/projects/recipe-data-platform/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<article class="post-single fz-project-page">
+  <header class="post-header fz-project-hero">
+    <div class="fz-pill">PROJECT</div>
+    <h1 class="post-title">Recipe Data Platform</h1>
+    <div class="post-description">A personal data engineering project using Snowflake, Kafka, Airflow, dbt, Spark, FastAPI, Streamlit, and Docker to turn recipe content into structured, explorable data.</div>
+    
+    <div class="fz-tags">
+      <span>Python</span><span>Snowflake</span><span>Kafka</span><span>Airflow</span><span>dbt</span><span>Spark</span><span>FastAPI</span><span>Streamlit</span><span>Docker</span>
+    </div>
+    
+    
+    <div class="fz-actions fz-project-actions">
+      <a class="fz-btn" href="https://github.com/fayssalz59/social-recipe-intelligence">GitHub</a>
+      <a class="fz-btn" href="https://recipe.fayssal-zeggar.com">Live demo</a>
+      <a class="fz-btn" href="/projects/recipe-data-platform-technical/">Technical deep dive</a>
+    </div>
+    
+  </header>
+
+  
+  <section class="fz-section fz-project-block">
+    <div class="fz-section-heading">
+      <span>ARCHITECTURE OVERVIEW</span>
+      <h2>Readable in seconds, detailed enough for a technical discussion.</h2>
+      <p>The project separates raw ingestion, trusted warehouse layers, transformation, analytics, and user-facing delivery.</p>
+    </div>
+    <div class="fz-architecture">
+      <div>Sources</div>
+      <div>Kafka / Batch</div>
+      <div>Snowflake Bronze</div>
+      <div>Silver + LLM</div>
+      <div>dbt / Spark Gold</div>
+      <div>API + Dashboard</div>
+    </div>
+  </section>
+
+  <section class="fz-section fz-grid fz-grid--3">
+    <article class="fz-card">
+      <h3>Problem</h3>
+      <p>Recipe content from social platforms is messy, multilingual, and difficult to analyze without structured metadata.</p>
+    </article>
+    <article class="fz-card">
+      <h3>Solution</h3>
+      <p>The platform ingests raw recipe records, enriches descriptions with an LLM, models Bronze/Silver/Gold layers in Snowflake, and serves curated data through an API and dashboard.</p>
+    </article>
+    <article class="fz-card">
+      <h3>Result</h3>
+      <p>The project demonstrates a complete, interview-ready data platform with orchestration, warehouse modeling, analytics, API serving, and a live application.</p>
+    </article>
+  </section>
+  
+
+  <div class="post-content"><h1 id="tiktok-recipe-intelligence">TikTok Recipe Intelligence</h1>
+<h2 id="project-overview">Project Overview</h2>
+<p>TikTok Recipe Intelligence is an end-to-end data engineering and analytics platform that turns unstructured social media recipe content into structured, queryable, and explorable data.</p>
+<p>The project starts from TikTok recipe videos and recipe-like captions. It ingests raw content into Snowflake, enriches descriptions with an LLM through OpenRouter, models the data through a Bronze/Silver/Gold architecture, computes analytics with PySpark, orchestrates batch jobs with Airflow, exposes curated records through FastAPI, and presents the results in a Streamlit dashboard.</p>
+<p>The goal of this project is not to build a small isolated scraper. The goal is to demonstrate the shape of a modern data platform: ingestion, event streaming, warehouse modeling, semantic enrichment, orchestration, transformation, distributed analytics, API serving, dashboarding, and local reproducibility with Docker.</p>
+<h2 id="what-problem-this-project-solves">What Problem This Project Solves</h2>
+<p>Recipe content on social platforms is messy. A TikTok caption may contain a dish name, a cuisine style, a language signal, an ingredient, a vegetarian cue, or no useful metadata at all. That information is valuable, but it is not directly available in an analytical format.</p>
+<p>This project transforms that unstructured content into structured data that can answer questions such as:</p>
+<ul>
+<li>Which cuisine styles appear most often?</li>
+<li>Which ingredients dominate the recipe catalog?</li>
+<li>How many recipes are vegetarian?</li>
+<li>Which languages are present in the collected content?</li>
+<li>Which LLM model generated each enrichment?</li>
+<li>Which recipes are ready to be served through an API or dashboard?</li>
+<li>Which enriched records need review because of low confidence or unknown values?</li>
+</ul>
+<h2 id="high-level-architecture">High-Level Architecture</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>CSV seed data / TikTok creator monitor
+</span></span><span style="display:flex;"><span>        |
+</span></span><span style="display:flex;"><span>        | batch ingestion or Kafka event
+</span></span><span style="display:flex;"><span>        v
+</span></span><span style="display:flex;"><span>Snowflake Bronze
+</span></span><span style="display:flex;"><span>        |
+</span></span><span style="display:flex;"><span>        | OpenRouter LLM enrichment
+</span></span><span style="display:flex;"><span>        v
+</span></span><span style="display:flex;"><span>Snowflake Silver
+</span></span><span style="display:flex;"><span>        |
+</span></span><span style="display:flex;"><span>        +--&gt; dbt Gold serving views --&gt; FastAPI + Streamlit
+</span></span><span style="display:flex;"><span>        |
+</span></span><span style="display:flex;"><span>        +--&gt; PySpark analytics --&gt; Gold analytics tables
+</span></span><span style="display:flex;"><span>        |
+</span></span><span style="display:flex;"><span>        v
+</span></span><span style="display:flex;"><span>Airflow orchestration + Docker Compose local platform
+</span></span></code></pre></div><h2 id="main-components">Main Components</h2>
+<p>The project is intentionally built with multiple realistic data platform components:</p>
+<ul>
+<li><strong>Kafka</strong> handles event-driven ingestion from the TikTok creator monitor.</li>
+<li><strong>Snowflake</strong> stores the analytical data warehouse layers.</li>
+<li><strong>Bronze/Silver/Gold modeling</strong> separates raw data, enriched records, and consumption-ready data.</li>
+<li><strong>OpenRouter / LLM enrichment</strong> extracts structured recipe attributes from messy captions.</li>
+<li><strong>dbt</strong> creates curated Gold models for the API and Streamlit dashboard.</li>
+<li><strong>PySpark</strong> computes batch analytics tables from the Silver layer.</li>
+<li><strong>Airflow</strong> orchestrates ingestion, enrichment, dbt, and Spark jobs.</li>
+<li><strong>FastAPI</strong> exposes curated recipe data through clean HTTP endpoints.</li>
+<li><strong>Streamlit</strong> provides an interactive analytics interface.</li>
+<li><strong>Docker Compose</strong> runs the platform locally with reproducible services.</li>
+<li><strong>Portainer</strong> makes the container stack easier to inspect during local development.</li>
+</ul>
+<h2 id="data-flow">Data Flow</h2>
+<ol>
+<li>
+<p><strong>Raw content arrives</strong></p>
+<p>The project supports two ingestion paths. A CSV seed dataset can be loaded directly into Snowflake Bronze for deterministic local demos. A TikTok creator monitor can also detect new videos, publish events to Kafka, and feed the Bronze table through a Kafka consumer.</p>
+</li>
+<li>
+<p><strong>Bronze stores raw records</strong></p>
+<p>The Bronze layer stores source-level recipe records with titles, descriptions, TikTok URLs, source metadata, raw payloads, and record hashes for idempotent loading.</p>
+</li>
+<li>
+<p><strong>Silver enriches the content</strong></p>
+<p>The enrichment job reads unprocessed Bronze rows, sends recipe descriptions to OpenRouter, validates the JSON response, and writes structured fields to Silver:</p>
+<ul>
+<li>recipe language</li>
+<li>vegetarian flag</li>
+<li>cuisine style</li>
+<li>main ingredient</li>
+<li>processing confidence</li>
+<li>model name</li>
+<li>raw LLM response</li>
+</ul>
+</li>
+<li>
+<p><strong>dbt builds serving views</strong></p>
+<p>dbt reads Silver and creates Gold views for downstream consumers. The API gets a clean API-oriented catalog. Streamlit gets a dashboard-oriented catalog.</p>
+</li>
+<li>
+<p><strong>Spark computes analytics</strong></p>
+<p>PySpark reads the Silver table from Snowflake and writes aggregate analytics tables back to the Gold schema. These tables summarize the catalog by cuisine, ingredient, language, and model.</p>
+</li>
+<li>
+<p><strong>Products consume Gold</strong></p>
+<p>FastAPI exposes recipes and filters. Streamlit shows KPIs, charts, recipe cards, Spark analytics, and data quality views.</p>
+</li>
+</ol>
+<h2 id="what-i-built">What I Built</h2>
+<p>This project demonstrates work across the full data stack:</p>
+<ul>
+<li>designed a medallion architecture in Snowflake;</li>
+<li>implemented CSV ingestion into Bronze with idempotent merge logic;</li>
+<li>implemented event-driven ingestion with Kafka;</li>
+<li>created a TikTok creator monitor that emits normalized content events;</li>
+<li>integrated OpenRouter for structured LLM enrichment;</li>
+<li>hardened the LLM parser to accept valid JSON objects and single-item lists;</li>
+<li>modeled Gold serving layers with dbt;</li>
+<li>implemented Spark analytics jobs that read and write Snowflake tables;</li>
+<li>orchestrated jobs with Airflow DAGs;</li>
+<li>exposed curated data through FastAPI;</li>
+<li>built an interactive Streamlit analytics dashboard;</li>
+<li>containerized the main services with Docker Compose;</li>
+<li>documented setup, architecture, limitations, and smoke tests.</li>
+</ul>
+<h2 id="why-this-is-a-data-engineering-project">Why This Is a Data Engineering Project</h2>
+<p>The strongest part of this project is the system design. Each component has a clear role:</p>
+<ul>
+<li>ingestion is separated from enrichment;</li>
+<li>raw data is preserved before transformation;</li>
+<li>LLM output is validated before entering Silver;</li>
+<li>dbt handles serving models;</li>
+<li>Spark handles heavier analytical aggregation;</li>
+<li>Airflow coordinates batch execution;</li>
+<li>API and dashboard read from curated Gold data, not raw tables;</li>
+<li>Docker makes the local platform reproducible.</li>
+</ul>
+<p>That separation makes the project realistic. It is not just a notebook, not just a dashboard, and not just an API. It is a complete pipeline with multiple serving surfaces.</p>
+<h2 id="current-dashboard-capabilities">Current Dashboard Capabilities</h2>
+<p>The Streamlit application now includes:</p>
+<ul>
+<li>global catalog KPIs;</li>
+<li>visible-record KPIs based on active filters;</li>
+<li>filters for language, cuisine, ingredient, model, vegetarian status, confidence, and search text;</li>
+<li>charts for cuisine distribution, language distribution, ingredient frequency, and LLM model usage;</li>
+<li>recipe cards with TikTok links and enrichment metadata;</li>
+<li>full tabular exploration;</li>
+<li>optional Spark analytics visualizations when aggregate tables exist;</li>
+<li>data quality views for unknown values, missing values, and low-confidence enrichments;</li>
+<li>warehouse layer counts for Bronze, Silver, and Gold when available.</li>
+</ul>
+<h2 id="portfolio-value">Portfolio Value</h2>
+<p>This project is designed to be discussed in a technical interview. It shows that I can:</p>
+<ul>
+<li>build a multi-service data platform;</li>
+<li>reason about data modeling layers;</li>
+<li>integrate APIs and LLMs into batch pipelines;</li>
+<li>use Kafka for event-driven ingestion;</li>
+<li>use Snowflake as a central analytical warehouse;</li>
+<li>use dbt and Spark for different transformation needs;</li>
+<li>use Airflow for orchestration;</li>
+<li>expose data through both API and dashboard layers;</li>
+<li>package the system locally with Docker;</li>
+<li>identify and fix operational issues in a real repository.</li>
+</ul>
+<h2 id="known-tradeoffs">Known Tradeoffs</h2>
+<p>The project is intentionally portfolio-oriented and local-first. A few choices are pragmatic rather than fully production-grade:</p>
+<ul>
+<li>some services still install dependencies at container startup;</li>
+<li>the Spark job is triggered through a long-lived container using <code>docker exec</code>;</li>
+<li>TikTok scraping is inherently fragile because sessions, tokens, bot detection, and browser behavior can change;</li>
+<li>Snowflake credentials and OpenRouter keys must be supplied by the user through environment variables;</li>
+<li>the local Docker Compose setup is designed for demonstration, not high availability.</li>
+</ul>
+<p>These tradeoffs are documented because they are part of the engineering story. The project is not pretending to be a production platform; it is showing how a production-shaped platform can be built, tested, and improved.</p>
+<h2 id="next-improvements">Next Improvements</h2>
+<p>The next improvements are clear and realistic:</p>
+<ul>
+<li>create custom Docker images for Airflow, API, Streamlit, and Spark;</li>
+<li>add dbt tests for uniqueness, freshness, and accepted values;</li>
+<li>add unit tests for LLM parsing and Kafka event normalization;</li>
+<li>add a deterministic demo mode that does not depend on live TikTok scraping;</li>
+<li>add more Streamlit analytics from the Spark Gold tables;</li>
+<li>improve CI/CD readiness with linting and smoke tests;</li>
+<li>generalize the source model for Instagram Reels and YouTube Shorts.</li>
+</ul>
+<h2 id="final-result">Final Result</h2>
+<p>TikTok Recipe Intelligence is a complete, explainable, and extensible data engineering portfolio project. It demonstrates how raw social media content can be transformed into structured analytics and served through modern data products.</p>
+<p>The project is strong because it combines realistic architecture with practical implementation: Snowflake, Kafka, Airflow, dbt, Spark, LLM enrichment, FastAPI, Streamlit, and Docker all work together toward one clear use case.</p>
+<h2 id="technical-steps">Technical steps</h2>
+<p>For a deeper engineering breakdown, read the <a href="/projects/recipe-data-platform-technical/">technical deep dive</a>.</p>
+</div>
+</article>
+
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="/"></a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
