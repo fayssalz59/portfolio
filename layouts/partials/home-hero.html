@@ -1,0 +1,65 @@
+<section class="fz-section fz-hero">
+  <div class="fz-hero__content">
+    <div class="fz-pill">{{ .Site.Params.fayssal.role | default "Data Engineer | Snowflake, Python, SQL" }}</div>
+    <h1>Fayssal Zeggar</h1>
+    <p class="fz-lead">{{ .Site.Params.fayssal.intro | default "Data engineer building governed Snowflake pipelines and analytics-ready data products." }}</p>
+    <p class="fz-sublead">{{ .Site.Params.fayssal.summary }}</p>
+    <div class="fz-actions">
+      <a class="fz-btn fz-btn--primary" href="/projects/recipe-data-platform/">View case study</a>
+      <a class="fz-btn" href="{{ .Site.Params.fayssal.demo }}">Live demo</a>
+      <a class="fz-btn" href="{{ .Site.Params.fayssal.resume }}">Download resume</a>
+      <a class="fz-btn" href="mailto:{{ .Site.Params.fayssal.email }}">Contact</a>
+    </div>
+    <div class="fz-tags">
+      <span>Snowflake</span>
+      <span>Python</span>
+      <span>SQL</span>
+      <span>ETL / ELT</span>
+      <span>Power BI</span>
+      <span>Dataiku</span>
+    </div>
+    <div class="fz-profile-strip" aria-label="Recruiter snapshot">
+      <span>Toronto, Canada</span>
+      <span>Permanent Resident</span>
+      <span>No sponsorship required</span>
+      <span>French / English / Spanish</span>
+    </div>
+  </div>
+  <div class="fz-hero__proof">
+    <article>
+      <span>Manufacturing data scale</span>
+      <strong>6,000</strong>
+      <p>Parameters per batch handled in pharmaceutical process data pipelines.</p>
+    </article>
+    <article>
+      <span>Migration ownership</span>
+      <strong>30</strong>
+      <p>Power BI tables and data sources migrated and restructured into Snowflake.</p>
+    </article>
+    <article>
+      <span>User enablement</span>
+      <strong>60+</strong>
+      <p>SME users supported through simpler access to Snowflake data from JMP.</p>
+    </article>
+  </div>
+</section>
+
+<section class="fz-section fz-intro-grid">
+  <article class="fz-panel fz-panel--focus">
+    <span>Current professional focus</span>
+    <h2>Reliable data engineering in regulated pharmaceutical manufacturing.</h2>
+    <p>I design and maintain Snowflake-based ETL/ELT pipelines, integrate data from APRM, MES, SAP, and LIMS, optimize SQL models, and support analytics, AI, and ML initiatives with governed data access.</p>
+  </article>
+  <article class="fz-panel">
+    <span>Recruiter snapshot</span>
+    <ul class="fz-checklist">
+      <li>Target roles: Data Engineer, Snowflake Data Engineer, Analytics Engineer.</li>
+      <li>Professional core: Snowflake, Python, SQL, ETL/ELT, governance, analytics enablement.</li>
+      <li>Portfolio project stack: Kafka, Airflow, dbt, Spark, FastAPI, Streamlit, Docker.</li>
+    </ul>
+    <div class="fz-link-card">
+      <span>Professional profile</span>
+      <a href="{{ .Site.Params.fayssal.linkedin }}">linkedin.com/in/fzeggar</a>
+    </div>
+  </article>
+</section>

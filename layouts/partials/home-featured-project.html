@@ -1,0 +1,39 @@
+{{ $featured := where (where .Site.RegularPages "Section" "projects") "Params.featured" true }}
+{{ if not $featured }}{{ $featured = first 1 (where .Site.RegularPages "Section" "projects") }}{{ end }}
+<section class="fz-section">
+  <div class="fz-section-heading">
+    <span>FEATURED PROJECT</span>
+    <h2>Recipe Data Platform</h2>
+    <p>A personal project that demonstrates a full data platform from ingestion to warehouse modeling, orchestration, API serving, and dashboard exploration.</p>
+  </div>
+  {{ with index $featured 0 }}
+  <article class="fz-featured">
+    <div class="fz-featured__copy">
+      <h3>{{ .Title }}</h3>
+      <p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
+      <div class="fz-tags">
+        {{ range .Params.tech }}<span>{{ . }}</span>{{ end }}
+      </div>
+      <div class="fz-actions">
+        <a class="fz-btn fz-btn--primary" href="{{ .RelPermalink }}">Case study</a>
+        <a class="fz-btn" href="/projects/recipe-data-platform-technical/">Technical deep dive</a>
+        {{ with .Params.github }}<a class="fz-btn" href="{{ . }}">GitHub</a>{{ end }}
+        {{ with .Params.demo }}<a class="fz-btn" href="{{ . }}">Live demo</a>{{ end }}
+      </div>
+    </div>
+    <div class="fz-featured__visual">
+      <img src="/img/project-thumb.svg" alt="Recipe Data Platform architecture diagram" />
+    </div>
+  </article>
+  {{ else }}
+  <article class="fz-featured">
+    <div class="fz-featured__copy">
+      <h3>Recipe Data Platform</h3>
+      <p>Project content is available through the portfolio case study, technical deep dive, GitHub repository, and live demo.</p>
+      <div class="fz-actions">
+        <a class="fz-btn fz-btn--primary" href="/projects/recipe-data-platform/">Case study</a>
+      </div>
+    </div>
+  </article>
+  {{ end }}
+</section>

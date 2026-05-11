@@ -1,0 +1,37 @@
+{{ $featured := where .Site.RegularPages "Section" "projects" }}
+{{ $featured = first 1 $featured }}
+<section class="fz-section">
+  <div class="fz-section-heading">
+    <span>FEATURED PROJECT</span>
+    <h2>One strong case study is enough to make the homepage feel serious.</h2>
+    <p>A flagship project should look like proof, not like a basic blog tile.</p>
+  </div>
+  {{ with index $featured 0 }}
+  <article class="fz-featured">
+    <div class="fz-featured__copy">
+      <h3>{{ .Title }}</h3>
+      <p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
+      <div class="fz-tags">
+        {{ range .Params.tech }}<span>{{ . }}</span>{{ end }}
+      </div>
+      <div class="fz-actions">
+        <a class="fz-btn fz-btn--primary" href="{{ .RelPermalink }}">Read case study</a>
+        <a class="fz-btn" href="/projects/">See all projects</a>
+      </div>
+    </div>
+    <div class="fz-featured__visual">
+      <img src="/img/project-thumb.svg" alt="Project architecture preview" />
+    </div>
+  </article>
+  {{ else }}
+  <article class="fz-featured">
+    <div class="fz-featured__copy">
+      <h3>Add your first project</h3>
+      <p>Create content in <code>content/projects/</code> to automatically power this section.</p>
+      <div class="fz-actions">
+        <a class="fz-btn fz-btn--primary" href="/projects/">Projects</a>
+      </div>
+    </div>
+  </article>
+  {{ end }}
+</section>

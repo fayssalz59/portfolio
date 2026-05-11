@@ -1,0 +1,78 @@
+{{ define "main" }}
+<article class="post-single fz-project-page">
+  <header class="post-header fz-project-hero">
+    <a class="fz-back-link" href="/">Back to portfolio</a>
+    <div class="fz-pill">PROJECT</div>
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{ with .Params.summary }}<div class="post-description">{{ . }}</div>{{ end }}
+    {{ with .Params.tech }}
+    <div class="fz-tags">
+      {{ range . }}<span>{{ . }}</span>{{ end }}
+    </div>
+    {{ end }}
+    {{ if eq .Section "projects" }}
+    <div class="fz-actions fz-project-actions">
+      {{ with .Params.github }}<a class="fz-btn" href="{{ . }}">GitHub</a>{{ end }}
+      {{ with .Params.demo }}<a class="fz-btn" href="{{ . }}">Live demo</a>{{ end }}
+      {{ with .Params.technical }}<a class="fz-btn" href="{{ . }}">Technical deep dive</a>{{ end }}
+    </div>
+    {{ end }}
+  </header>
+
+  {{ if eq .Section "projects" }}
+  <section class="fz-section fz-project-block fz-review-strip">
+    <article>
+      <span>For recruiters</span>
+      <strong>{{ .Params.problem | default "A data project with a clear business or technical problem." }}</strong>
+    </article>
+    <article>
+      <span>For technical reviewers</span>
+      <strong>{{ .Params.solution | default "A pipeline architecture with clear responsibilities and documented tradeoffs." }}</strong>
+    </article>
+    <article>
+      <span>Best next click</span>
+      <strong>
+        {{ if .Params.technical }}
+        <a href="{{ .Params.technical }}">Read the technical deep dive</a>
+        {{ else }}
+        <a href="/">Return to the portfolio overview</a>
+        {{ end }}
+      </strong>
+    </article>
+  </section>
+
+  <section class="fz-section fz-project-block">
+    <div class="fz-section-heading">
+      <span>ARCHITECTURE OVERVIEW</span>
+      <h2>Readable in seconds, detailed enough for a technical discussion.</h2>
+      <p>The project separates raw ingestion, trusted warehouse layers, transformation, analytics, and user-facing delivery.</p>
+    </div>
+    <div class="fz-architecture">
+      <div>Sources</div>
+      <div>Kafka / Batch</div>
+      <div>Snowflake Bronze</div>
+      <div>Silver + LLM</div>
+      <div>dbt / Spark Gold</div>
+      <div>API + Dashboard</div>
+    </div>
+  </section>
+
+  <section class="fz-section fz-grid fz-grid--3">
+    <article class="fz-card">
+      <h3>Problem</h3>
+      <p>{{ .Params.problem | default "Manual extraction and messy upstream data made delivery slower and harder to trust." }}</p>
+    </article>
+    <article class="fz-card">
+      <h3>Solution</h3>
+      <p>{{ .Params.solution | default "A clearer pipeline with ingestion, staging, modeling, and warehouse-ready delivery improved structure and readability." }}</p>
+    </article>
+    <article class="fz-card">
+      <h3>Result</h3>
+      <p>{{ .Params.result | default "The project now reads as a stronger engineering case study and shows better technical reasoning, not just tooling." }}</p>
+    </article>
+  </section>
+  {{ end }}
+
+  <div class="post-content">{{ .Content }}</div>
+</article>
+{{ end }}

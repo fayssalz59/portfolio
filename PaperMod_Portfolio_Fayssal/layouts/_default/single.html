@@ -1,0 +1,49 @@
+{{ define "main" }}
+<article class="post-single fz-project-page">
+  <header class="post-header fz-project-hero">
+    <div class="fz-pill">PROJECT</div>
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{ with .Params.summary }}<div class="post-description">{{ . }}</div>{{ end }}
+    {{ with .Params.tech }}
+    <div class="fz-tags">
+      {{ range . }}<span>{{ . }}</span>{{ end }}
+    </div>
+    {{ end }}
+  </header>
+
+  {{ if eq .Section "projects" }}
+  <section class="fz-section fz-project-block">
+    <div class="fz-section-heading">
+      <span>ARCHITECTURE OVERVIEW</span>
+      <h2>Lead with a diagram that is readable in seconds.</h2>
+      <p>For a data engineer portfolio, this is one of the most valuable visual blocks.</p>
+    </div>
+    <div class="fz-architecture">
+      <div>APIs</div>
+      <div>Raw</div>
+      <div>Staging</div>
+      <div>Models</div>
+      <div>Warehouse</div>
+      <div>BI</div>
+    </div>
+  </section>
+
+  <section class="fz-section fz-grid fz-grid--3">
+    <article class="fz-card">
+      <h3>Problem</h3>
+      <p>{{ .Params.problem | default "Manual extraction and messy upstream data made delivery slower and harder to trust." }}</p>
+    </article>
+    <article class="fz-card">
+      <h3>Solution</h3>
+      <p>{{ .Params.solution | default "A clearer pipeline with ingestion, staging, modeling, and warehouse-ready delivery improved structure and readability." }}</p>
+    </article>
+    <article class="fz-card">
+      <h3>Result</h3>
+      <p>{{ .Params.result | default "The project now reads as a stronger engineering case study and shows better technical reasoning, not just tooling." }}</p>
+    </article>
+  </section>
+  {{ end }}
+
+  <div class="post-content">{{ .Content }}</div>
+</article>
+{{ end }}
