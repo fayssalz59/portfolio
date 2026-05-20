@@ -175,6 +175,7 @@ body.dark {
 
 .fz-hero__content,
 .fz-hero__proof,
+.fz-work-panel,
 .fz-panel,
 .fz-card,
 .fz-featured,
@@ -195,9 +196,125 @@ body.dark {
   padding: clamp(1.4rem, 3vw, 2.3rem);
 }
 
+.fz-hero--work {
+  min-height: calc(100vh - 180px);
+  align-items: center;
+}
+
 .fz-hero h1 {
   margin: 0.9rem 0 0.7rem;
   font-size: clamp(3rem, 7vw, 5.5rem);
+}
+
+.fz-work-panel {
+  display: grid;
+  gap: 1.15rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.fz-work-panel h2 {
+  margin: 0;
+  color: var(--fz-text);
+  font-size: clamp(1.55rem, 3vw, 2.25rem);
+  line-height: 1.12;
+}
+
+.fz-work-list {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fz-work-list li {
+  position: relative;
+  padding-left: 1.05rem;
+  color: var(--fz-muted);
+  line-height: 1.55;
+}
+
+.fz-work-list li::before {
+  position: absolute;
+  top: 0.68rem;
+  left: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  content: "";
+  border-radius: 50%;
+  background: var(--fz-green);
+}
+
+.fz-work-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+  padding-top: 0.35rem;
+}
+
+.fz-work-stats div {
+  padding: 0.85rem;
+  border: 1px solid rgba(34, 50, 70, 0.72);
+  border-radius: 6px;
+  background: rgba(10, 15, 22, 0.35);
+}
+
+.fz-work-stats strong,
+.fz-work-stats span {
+  display: block;
+}
+
+.fz-work-stats strong {
+  color: var(--fz-text);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1;
+}
+
+.fz-work-stats span {
+  margin-top: 0.4rem;
+  color: var(--fz-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.fz-project-teasers {
+  display: grid;
+  gap: 0.7rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--fz-border);
+}
+
+.fz-project-teasers a {
+  display: block;
+  padding: 0.85rem 0;
+  color: var(--fz-text);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(34, 50, 70, 0.72);
+}
+
+.fz-project-teasers a:last-child {
+  border-bottom: 0;
+}
+
+.fz-project-teasers strong,
+.fz-project-teasers a > span {
+  display: block;
+}
+
+.fz-project-teasers strong {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.fz-project-teasers a > span {
+  margin-top: 0.25rem;
+  color: var(--fz-muted);
+  font-size: 0.85rem;
+}
+
+.fz-project-teasers a:hover strong,
+.fz-project-teasers a:focus-visible strong {
+  color: var(--fz-green);
 }
 
 .fz-lead {
@@ -271,7 +388,8 @@ body.dark {
 .fz-back-link:focus-visible,
 .post-content a:focus-visible,
 .fz-review-strip a:focus-visible,
-.fz-link-card a:focus-visible {
+.fz-link-card a:focus-visible,
+.fz-project-teasers a:focus-visible {
   outline: 3px solid rgba(121, 214, 188, 0.5);
   outline-offset: 3px;
 }
@@ -782,6 +900,14 @@ body.dark {
   .fz-case,
   .fz-review-strip,
   .fz-architecture {
+    grid-template-columns: 1fr;
+  }
+
+  .fz-hero--work {
+    min-height: auto;
+  }
+
+  .fz-work-stats {
     grid-template-columns: 1fr;
   }
 

@@ -1,11 +1,13 @@
-<section class="fz-section fz-hero">
+{{ $projects := where (where .Site.RegularPages "Section" "projects") "Params.home" true }}
+{{ $projects = sort $projects "Params.weight" }}
+<section class="fz-section fz-hero fz-hero--work">
   <div class="fz-hero__content">
     <div class="fz-pill">{{ .Site.Params.fayssal.role | default "Data Engineer | Snowflake, Python, SQL" }}</div>
     <h1>Fayssal Zeggar</h1>
-    <p class="fz-lead">Data engineer building governed data pipelines, analytics-ready platforms, and practical AI/data products.</p>
+    <p class="fz-lead">I turn regulated manufacturing data into reliable datasets, dashboards, and practical access for technical users.</p>
     <p class="fz-sublead">{{ .Site.Params.fayssal.summary }}</p>
     <div class="fz-actions">
-      <a class="fz-btn fz-btn--primary" href="#projects">View projects</a>
+      <a class="fz-btn fz-btn--primary" href="/projects/">View projects</a>
       <a class="fz-btn" href="{{ .Site.Params.fayssal.resume }}">Download resume</a>
       <a class="fz-btn" href="mailto:{{ .Site.Params.fayssal.email }}">Contact</a>
     </div>
@@ -24,21 +26,28 @@
       <span>French / English / Spanish</span>
     </div>
   </div>
-  <div class="fz-hero__proof">
-    <article>
-      <span>Data scale</span>
-      <strong>6,000</strong>
-      <p>Manufacturing parameters handled in regulated process data pipelines.</p>
-    </article>
-    <article>
-      <span>Migration</span>
-      <strong>30</strong>
-      <p>Power BI tables and sources restructured into Snowflake-backed models.</p>
-    </article>
-    <article>
-      <span>Enablement</span>
-      <strong>60+</strong>
-      <p>SME users supported with simpler access to trusted analytical data.</p>
-    </article>
+  <div class="fz-work-panel">
+    <span class="fz-mini-label">What I do at work</span>
+    <h2>Reliable data work in a regulated environment.</h2>
+    <ul class="fz-work-list">
+      <li>Structure manufacturing process data so it can be trusted, queried, and reused.</li>
+      <li>Move reporting sources into Snowflake-backed models with clearer ownership and lineage.</li>
+      <li>Support technical and business users with simpler access to validated analytical data.</li>
+      <li>Build around traceability, data quality, and practical delivery instead of isolated demos.</li>
+    </ul>
+    <div class="fz-work-stats" aria-label="Work snapshot">
+      <div><strong>6,000</strong><span>parameters per batch</span></div>
+      <div><strong>30</strong><span>BI tables migrated</span></div>
+      <div><strong>60+</strong><span>users supported</span></div>
+    </div>
+    <div class="fz-project-teasers">
+      <span class="fz-mini-label">Portfolio proof</span>
+      {{ range $projects }}
+      <a href="{{ .RelPermalink }}">
+        <strong>{{ .Title }}</strong>
+        <span>{{ .Params.project_type | default "Data engineering project" }}</span>
+      </a>
+      {{ end }}
+    </div>
   </div>
 </section>
