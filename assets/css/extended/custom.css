@@ -322,6 +322,10 @@ body.dark {
   background: var(--fz-border-strong);
 }
 
+.fz-tags--compact {
+  gap: 0.45rem 0.85rem;
+}
+
 .fz-profile-strip {
   display: flex;
   flex-wrap: wrap;
@@ -540,6 +544,26 @@ body.dark {
 
 .fz-grid--3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.fz-skill-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.9rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--fz-border);
+}
+
+.fz-skill-strip span {
+  color: var(--fz-muted);
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.fz-skill-strip span::before {
+  content: "#";
+  color: var(--fz-green);
+  margin-right: 0.1rem;
 }
 
 .fz-card {

@@ -3,8 +3,8 @@
 <section class="fz-section" id="projects">
   <div class="fz-section-heading">
     <span>SELECTED PROJECTS</span>
-    <h2>Two complete projects, each with a clear engineering story.</h2>
-    <p>Two public repositories with visible architecture, skills, tradeoffs, and direct links to inspect the work.</p>
+    <h2>Project pages with the full engineering story.</h2>
+    <p>The homepage stays short. Open a project to inspect the architecture, technical decisions, links, and tradeoffs.</p>
   </div>
   <div class="fz-project-showcase">
   {{ range $projects }}
@@ -14,27 +14,14 @@
         <h3>{{ .Title }}</h3>
         <p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
       </div>
-      <div class="fz-project-card__meta">
-        <div>
-          <span>Problem</span>
-          <strong>{{ .Params.problem }}</strong>
-        </div>
-        <div>
-          <span>Built</span>
-          <strong>{{ .Params.solution }}</strong>
-        </div>
-      </div>
       <div>
-        <span class="fz-mini-label">Skills used</span>
-        <div class="fz-tags">
-          {{ range .Params.tech }}<span>{{ . }}</span>{{ end }}
+        <span class="fz-mini-label">Core stack</span>
+        <div class="fz-tags fz-tags--compact">
+          {{ range first 5 .Params.tech }}<span>{{ . }}</span>{{ end }}
         </div>
       </div>
       <div class="fz-actions">
-        <a class="fz-btn fz-btn--primary" href="{{ .RelPermalink }}">Project page</a>
-        {{ with .Params.github }}<a class="fz-btn" href="{{ . }}">GitHub</a>{{ end }}
-        {{ if and .Params.demo (ne .Params.demo .Params.tastagram) }}<a class="fz-btn" href="{{ .Params.demo }}">Live site</a>{{ end }}
-        {{ with .Params.tastagram }}<a class="fz-btn" href="{{ . }}">Tastagram</a>{{ end }}
+        <a class="fz-btn fz-btn--primary" href="{{ .RelPermalink }}">Open project</a>
       </div>
     </article>
   {{ end }}
