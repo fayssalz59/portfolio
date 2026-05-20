@@ -72,10 +72,13 @@ body.dark {
 
 .fz-section-heading span,
 .fz-pill,
+.fz-mini-label,
 .fz-panel > span,
 .fz-metrics span,
 .fz-hero__proof span,
-.fz-stack article span {
+.fz-stack article span,
+.fz-project-card__header > span,
+.fz-project-card__meta span {
   display: inline-flex;
   align-items: center;
   color: var(--fz-green);
@@ -111,6 +114,7 @@ body.dark {
 .fz-lead,
 .fz-sublead,
 .fz-featured__copy p,
+.fz-project-card p,
 .fz-card p,
 .fz-stack p,
 .fz-panel p,
@@ -132,6 +136,7 @@ body.dark {
 .fz-panel,
 .fz-card,
 .fz-featured,
+.fz-project-card,
 .fz-stack article,
 .fz-process article,
 .fz-architecture,
@@ -210,6 +215,10 @@ body.dark {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
+}
+
+.fz-mini-label {
+  margin: 0.25rem 0 0.7rem;
 }
 
 .fz-tags span {
@@ -327,6 +336,51 @@ body.dark {
 .fz-featured {
   align-items: center;
   padding: 1.4rem;
+}
+
+.fz-project-showcase {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.fz-project-card {
+  display: grid;
+  gap: 1.2rem;
+  padding: 1.35rem;
+}
+
+.fz-project-card__header h3 {
+  margin: 0.65rem 0 0.65rem;
+  color: var(--fz-text);
+  font-size: clamp(1.55rem, 3vw, 2.25rem);
+  line-height: 1.12;
+}
+
+.fz-project-card__header p {
+  margin-bottom: 0;
+  line-height: 1.65;
+}
+
+.fz-project-card__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.fz-project-card__meta div {
+  padding: 0.9rem;
+  border: 1px solid var(--fz-border);
+  border-radius: 8px;
+  background: rgba(20, 32, 51, 0.72);
+}
+
+.fz-project-card__meta strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--fz-text);
+  font-size: 0.94rem;
+  line-height: 1.45;
 }
 
 .fz-featured__copy h3,
@@ -454,6 +508,10 @@ body.dark {
   margin-bottom: 0;
 }
 
+.fz-project-hero .fz-mini-label {
+  display: flex;
+}
+
 .fz-project-block .fz-section-heading {
   margin-bottom: 1rem;
 }
@@ -517,6 +575,12 @@ body.dark {
   background: rgba(143, 191, 143, 0.12);
 }
 
+.fz-skill-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
 .fz-project-page .post-content {
   margin-top: 2rem;
   padding: clamp(1.2rem, 3vw, 2rem);
@@ -530,6 +594,9 @@ body.dark {
   .fz-hero,
   .fz-intro-grid,
   .fz-featured,
+  .fz-project-showcase,
+  .fz-project-card__meta,
+  .fz-skill-groups,
   .fz-grid--3,
   .fz-process,
   .fz-stack,
@@ -552,6 +619,9 @@ body.dark {
   .fz-hero,
   .fz-intro-grid,
   .fz-featured,
+  .fz-project-showcase,
+  .fz-project-card__meta,
+  .fz-skill-groups,
   .fz-grid--3,
   .fz-process,
   .fz-stack,

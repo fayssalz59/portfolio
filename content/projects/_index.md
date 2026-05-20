@@ -1,4 +1,4 @@
 ---
 title: "Projects"
-summary: "Selected data engineering projects and technical case studies, with clear separation between professional experience and personal portfolio work."
+summary: "Two selected GitHub projects: TikTok Recipe Intelligence / Tastagram and World Cup AI Platform, with visible skills, architecture, and links."
 ---

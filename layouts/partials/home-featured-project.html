@@ -1,39 +1,42 @@
-{{ $featured := where (where .Site.RegularPages "Section" "projects") "Params.featured" true }}
-{{ if not $featured }}{{ $featured = first 1 (where .Site.RegularPages "Section" "projects") }}{{ end }}
-<section class="fz-section">
+{{ $projects := where (where .Site.RegularPages "Section" "projects") "Params.home" true }}
+{{ $projects = sort $projects "Params.weight" }}
+<section class="fz-section" id="projects">
   <div class="fz-section-heading">
-    <span>FEATURED PROJECT</span>
-    <h2>Recipe Data Platform</h2>
-    <p>A personal project that demonstrates a full data platform from ingestion to warehouse modeling, orchestration, API serving, and dashboard exploration.</p>
+    <span>SELECTED PROJECTS</span>
+    <h2>Two complete projects, each with a clear engineering story.</h2>
+    <p>Two public repositories with visible architecture, skills, tradeoffs, and direct links to inspect the work.</p>
   </div>
-  {{ with index $featured 0 }}
-  <article class="fz-featured">
-    <div class="fz-featured__copy">
-      <h3>{{ .Title }}</h3>
-      <p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
-      <div class="fz-tags">
-        {{ range .Params.tech }}<span>{{ . }}</span>{{ end }}
+  <div class="fz-project-showcase">
+  {{ range $projects }}
+    <article class="fz-project-card">
+      <div class="fz-project-card__header">
+        <span>{{ .Params.project_type | default "Data engineering project" }}</span>
+        <h3>{{ .Title }}</h3>
+        <p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
+      </div>
+      <div class="fz-project-card__meta">
+        <div>
+          <span>Problem</span>
+          <strong>{{ .Params.problem }}</strong>
+        </div>
+        <div>
+          <span>Built</span>
+          <strong>{{ .Params.solution }}</strong>
+        </div>
+      </div>
+      <div>
+        <span class="fz-mini-label">Skills used</span>
+        <div class="fz-tags">
+          {{ range .Params.tech }}<span>{{ . }}</span>{{ end }}
+        </div>
       </div>
       <div class="fz-actions">
-        <a class="fz-btn fz-btn--primary" href="{{ .RelPermalink }}">Case study</a>
-        <a class="fz-btn" href="/projects/recipe-data-platform-technical/">Technical deep dive</a>
+        <a class="fz-btn fz-btn--primary" href="{{ .RelPermalink }}">Project page</a>
         {{ with .Params.github }}<a class="fz-btn" href="{{ . }}">GitHub</a>{{ end }}
-        {{ with .Params.demo }}<a class="fz-btn" href="{{ . }}">Live demo</a>{{ end }}
+        {{ if and .Params.demo (ne .Params.demo .Params.tastagram) }}<a class="fz-btn" href="{{ .Params.demo }}">Live site</a>{{ end }}
+        {{ with .Params.tastagram }}<a class="fz-btn" href="{{ . }}">Tastagram</a>{{ end }}
       </div>
-    </div>
-    <div class="fz-featured__visual">
-      <img src="/img/project-thumb.png" alt="Recipe Data Platform architecture diagram" />
-    </div>
-  </article>
-  {{ else }}
-  <article class="fz-featured">
-    <div class="fz-featured__copy">
-      <h3>Recipe Data Platform</h3>
-      <p>Project content is available through the portfolio case study, technical deep dive, GitHub repository, and live demo.</p>
-      <div class="fz-actions">
-        <a class="fz-btn fz-btn--primary" href="/projects/recipe-data-platform/">Case study</a>
-      </div>
-    </div>
-  </article>
+    </article>
   {{ end }}
+  </div>
 </section>

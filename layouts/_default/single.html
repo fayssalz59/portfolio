@@ -6,6 +6,7 @@
     <h1 class="post-title">{{ .Title }}</h1>
     {{ with .Params.summary }}<div class="post-description">{{ . }}</div>{{ end }}
     {{ with .Params.tech }}
+    <div class="fz-mini-label">Skills used</div>
     <div class="fz-tags">
       {{ range . }}<span>{{ . }}</span>{{ end }}
     </div>
@@ -13,7 +14,8 @@
     {{ if eq .Section "projects" }}
     <div class="fz-actions fz-project-actions">
       {{ with .Params.github }}<a class="fz-btn" href="{{ . }}">GitHub</a>{{ end }}
-      {{ with .Params.demo }}<a class="fz-btn" href="{{ . }}">Live demo</a>{{ end }}
+      {{ if and .Params.demo (ne .Params.demo .Params.tastagram) }}<a class="fz-btn" href="{{ .Params.demo }}">Live demo</a>{{ end }}
+      {{ with .Params.tastagram }}<a class="fz-btn" href="{{ . }}">Tastagram</a>{{ end }}
       {{ with .Params.technical }}<a class="fz-btn" href="{{ . }}">Technical deep dive</a>{{ end }}
     </div>
     {{ end }}
@@ -34,6 +36,8 @@
       <strong>
         {{ if .Params.technical }}
         <a href="{{ .Params.technical }}">Read the technical deep dive</a>
+        {{ else if .Params.github }}
+        <a href="{{ .Params.github }}">Inspect the GitHub repository</a>
         {{ else }}
         <a href="/">Return to the portfolio overview</a>
         {{ end }}
@@ -44,18 +48,40 @@
   <section class="fz-section fz-project-block">
     <div class="fz-section-heading">
       <span>ARCHITECTURE OVERVIEW</span>
-      <h2>Readable in seconds, detailed enough for a technical discussion.</h2>
-      <p>The project separates raw ingestion, trusted warehouse layers, transformation, analytics, and user-facing delivery.</p>
+      <h2>{{ .Params.architecture_title | default "Readable in seconds, detailed enough for a technical discussion." }}</h2>
+      <p>{{ .Params.architecture_summary | default "The project separates source ingestion, trusted data layers, transformation, analytics, and user-facing delivery." }}</p>
     </div>
     <div class="fz-architecture">
-      <div>Sources</div>
-      <div>Kafka / Batch</div>
-      <div>Snowflake Bronze</div>
-      <div>Silver + LLM</div>
-      <div>dbt / Spark Gold</div>
-      <div>API + Dashboard</div>
+      {{ with .Params.architecture }}
+        {{ range . }}<div>{{ . }}</div>{{ end }}
+      {{ else }}
+        <div>Sources</div>
+        <div>Batch / Events</div>
+        <div>Bronze</div>
+        <div>Silver</div>
+        <div>Gold</div>
+        <div>API / App</div>
+      {{ end }}
     </div>
   </section>
+
+  {{ with .Params.skills }}
+  <section class="fz-section fz-project-block">
+    <div class="fz-section-heading">
+      <span>SKILLS USED</span>
+      <h2>What this project proves.</h2>
+      <p>The technologies are grouped by engineering responsibility, not just listed as keywords.</p>
+    </div>
+    <div class="fz-skill-groups">
+      {{ range . }}
+      <article class="fz-card">
+        <h3>{{ .name }}</h3>
+        <p>{{ .detail }}</p>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
 
   <section class="fz-section fz-grid fz-grid--3">
     <article class="fz-card">

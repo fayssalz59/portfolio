@@ -24,10 +24,12 @@ enableRobotsTXT = true
     email = "fayssal.zeggar@laposte.net"
     location = "Toronto, Ontario, Canada"
     linkedin = "https://linkedin.com/in/fzeggar"
+    github_profile = "https://github.com/fayssalz59"
     github = "https://github.com/fayssalz59/social-recipe-intelligence"
     portfolio = "https://portfolio.fayssal-zeggar.com"
     resume = "/files/Fayssal_Zeggar_CV.pdf"
-    demo = "https://recipe.fayssal-zeggar.com"
+    demo = "https://tastagram.fayssal-zeggar.com"
+    tastagram = "https://tastagram.fayssal-zeggar.com"
     project = "https://portfolio.fayssal-zeggar.com/projects/recipe-data-platform/"
     technical = "https://portfolio.fayssal-zeggar.com/projects/recipe-data-platform-technical/"
     intro = "Data engineer building governed Snowflake pipelines and analytics-ready data products."
@@ -39,7 +41,7 @@ enableRobotsTXT = true
 
 [[params.socialIcons]]
   name = "github"
-  url = "https://github.com/fayssalz59/social-recipe-intelligence"
+  url = "https://github.com/fayssalz59"
 
 [[params.socialIcons]]
   name = "email"
@@ -60,11 +62,11 @@ enableRobotsTXT = true
 [[menu.main]]
   identifier = "github"
   name = "GitHub"
-  url = "https://github.com/fayssalz59/social-recipe-intelligence"
+  url = "https://github.com/fayssalz59"
   weight = 30
 
 [[menu.main]]
   identifier = "demo"
-  name = "Live Demo"
-  url = "https://recipe.fayssal-zeggar.com"
+  name = "Tastagram"
+  url = "https://tastagram.fayssal-zeggar.com"
   weight = 40

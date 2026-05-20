@@ -6,7 +6,7 @@ summary: "A detailed engineering breakdown of the Recipe Data Platform architect
 featured: false
 weight: 2
 github: "https://github.com/fayssalz59/social-recipe-intelligence"
-demo: "https://recipe.fayssal-zeggar.com"
+demo: "https://tastagram.fayssal-zeggar.com"
 problem: "A portfolio data platform can easily become a tool list unless each component has a clear responsibility."
 solution: "This technical deep dive explains why Kafka, Snowflake, LLM enrichment, dbt, Spark, Airflow, FastAPI, Streamlit, and Docker each exist in the system."
 result: "The page gives senior reviewers a concrete view of architecture decisions, validation work, tradeoffs, and next production-readiness steps."
@@ -19,6 +19,9 @@ tech:
   - FastAPI
   - Streamlit
   - Docker
+_build:
+  render: always
+  list: never
 ---
 
 # TikTok Recipe Intelligence - Technical Deep Dive

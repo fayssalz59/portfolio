@@ -1,26 +1,44 @@
 +++
-title = "Recipe Data Platform"
+title = "TikTok Recipe Intelligence / Tastagram"
 draft = false
 date = 2026-05-11
-description = "End-to-end data engineering platform for social recipe intelligence."
-summary = "A personal data engineering project using Snowflake, Kafka, Airflow, dbt, Spark, FastAPI, Streamlit, and Docker to turn recipe content into structured, explorable data."
+description = "End-to-end data engineering platform and live Tastagram app for social recipe intelligence."
+summary = "A full data platform that turns messy TikTok recipe content into structured Snowflake data, curated analytics, API endpoints, and the live Tastagram experience."
 featured = true
+home = true
 weight = 1
+project_type = "Data platform + live app"
 github = "https://github.com/fayssalz59/social-recipe-intelligence"
-demo = "https://recipe.fayssal-zeggar.com"
+demo = "https://tastagram.fayssal-zeggar.com"
+tastagram = "https://tastagram.fayssal-zeggar.com"
 technical = "/projects/recipe-data-platform-technical/"
-problem = "Recipe content from social platforms is messy, multilingual, and difficult to analyze without structured metadata."
-solution = "The platform ingests raw recipe records, enriches descriptions with an LLM, models Bronze/Silver/Gold layers in Snowflake, and serves curated data through an API and dashboard."
-result = "The project demonstrates a complete, interview-ready data platform with orchestration, warehouse modeling, analytics, API serving, and a live application."
-tech = ["Python", "Snowflake", "Kafka", "Airflow", "dbt", "Spark", "FastAPI", "Streamlit", "Docker"]
+problem = "Social recipe content is messy, multilingual, incomplete, and hard to query without enrichment and lineage."
+solution = "I built ingestion, evidence recovery, LLM enrichment, Snowflake Bronze/Silver/Gold models, orchestration, analytics, API serving, Streamlit exploration, and Tastagram."
+result = "The project is a complete portfolio-grade data platform with a live public recipe discovery surface."
+tech = ["Python", "Snowflake", "SQL", "Kafka", "Airflow", "dbt", "Spark", "FastAPI", "Streamlit", "Docker", "OpenRouter LLM", "Tastagram"]
+architecture_title = "From social video evidence to a live recipe product."
+architecture_summary = "The platform keeps source evidence, enrichment, trusted warehouse models, analytics, and user-facing delivery separated."
+architecture = ["TikTok / CSV seed", "Kafka or batch ingestion", "Snowflake Bronze", "Evidence recovery + LLM Silver", "dbt and Spark Gold", "FastAPI / Streamlit / Tastagram"]
+skills = [
+  { name = "Data ingestion and orchestration", detail = "CSV loading, TikTok creator monitoring, Kafka event flow, Airflow DAGs, Docker Compose services, and repeatable local execution." },
+  { name = "Warehouse modeling", detail = "Snowflake Bronze/Silver/Gold schemas, idempotent merges, dbt serving models, and Spark aggregate analytics for downstream consumers." },
+  { name = "AI enrichment and data product delivery", detail = "OpenRouter-based recipe extraction, Pydantic validation, confidence scoring, FastAPI endpoints, Streamlit dashboarding, and the Tastagram live site." }
+]
 +++
-# TikTok Recipe Intelligence
+# TikTok Recipe Intelligence / Tastagram
+
+## Fast Snapshot
+
+- **Live site:** [tastagram.fayssal-zeggar.com](https://tastagram.fayssal-zeggar.com)
+- **GitHub:** [social-recipe-intelligence](https://github.com/fayssalz59/social-recipe-intelligence)
+- **Core skills:** Python, Snowflake, SQL, Kafka, Airflow, dbt, Spark, FastAPI, Streamlit, Docker, LLM enrichment
+- **Main idea:** transform unreliable social recipe content into trusted data products and a usable public app.
 
 ## Project Overview
 
-TikTok Recipe Intelligence is an end-to-end data engineering and analytics platform that turns unstructured social media recipe content into structured, queryable, and explorable data.
+TikTok Recipe Intelligence is an end-to-end data engineering and analytics platform behind Tastagram. It turns unstructured social media recipe content into structured, queryable, and explorable data, then serves that data through APIs, dashboards, and a public recipe discovery site.
 
-The project starts from TikTok recipe videos and recipe-like captions. It ingests raw content into Snowflake, enriches descriptions with an LLM through OpenRouter, models the data through a Bronze/Silver/Gold architecture, computes analytics with PySpark, orchestrates batch jobs with Airflow, exposes curated records through FastAPI, and presents the results in a Streamlit dashboard.
+The project starts from TikTok recipe videos, recovered captions, and recipe-like evidence. It ingests raw content into Snowflake, enriches descriptions with an LLM through OpenRouter, models the data through a Bronze/Silver/Gold architecture, computes analytics with PySpark, orchestrates jobs with Airflow, exposes curated records through FastAPI, presents internal analytics in Streamlit, and makes the final product visible through Tastagram.
 
 The goal of this project is not to build a small isolated scraper. The goal is to demonstrate the shape of a modern data platform: ingestion, event streaming, warehouse modeling, semantic enrichment, orchestration, transformation, distributed analytics, API serving, dashboarding, and local reproducibility with Docker.
 
@@ -142,6 +160,16 @@ The strongest part of this project is the system design. Each component has a cl
 
 That separation makes the project realistic. It is not just a notebook, not just a dashboard, and not just an API. It is a complete pipeline with multiple serving surfaces.
 
+## Public Product Surface
+
+Tastagram is the visible site for the project. It is important because it shows that the pipeline does not stop at warehouse tables. The enriched catalog becomes something a reviewer can actually open, search, and inspect.
+
+The project also keeps internal surfaces for technical validation:
+
+- FastAPI for curated recipe endpoints and filter values;
+- Streamlit for KPIs, data quality checks, charts, and recipe cards;
+- Snowflake Gold models as the contract between engineering and product surfaces.
+
 ## Current Dashboard Capabilities
 
 The Streamlit application now includes:
@@ -173,7 +201,7 @@ This project is designed to be discussed in a technical interview. It shows that
 
 ## Quick Review Links
 
-- [Live demo](https://recipe.fayssal-zeggar.com)
+- [Tastagram live site](https://tastagram.fayssal-zeggar.com)
 - [GitHub repository](https://github.com/fayssalz59/social-recipe-intelligence)
 - [Technical deep dive](/projects/recipe-data-platform-technical/)
 
