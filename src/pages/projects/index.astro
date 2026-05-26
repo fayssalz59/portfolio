@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+const projects = (await getCollection("projects")).sort((a, b) => a.data.weight - b.data.weight);
+const projectSlug = (id: string) => id.replace(/\.mdx?$/, "");
+---
+
+<BaseLayout title="Projects | Fayssal Zeggar" description="Data engineering projects by Fayssal Zeggar.">
+  <section class="page-hero">
+    <span class="eyebrow">Projects</span>
+    <h1>Data platforms with visible architecture and delivery paths.</h1>
+    <p class="lead">A compact set of projects built to make ingestion, modeling, serving, and quality decisions easy to inspect.</p>
+  </section>
+  <section class="section project-grid">
+    {projects.map((project) => (
+      <ProjectCard
+        title={project.data.title}
+        summary={project.data.summary}
+        href={`/projects/${projectSlug(project.id)}/`}
+        projectType={project.data.projectType}
+        tech={project.data.tech}
+      />
+    ))}
+  </section>
+</BaseLayout>

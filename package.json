@@ -1,0 +1,21 @@
+{
+  "name": "fayssal-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tinacms dev -c \"astro dev\"",
+    "build": "tinacms build --local --skip-cloud-checks --datalayer-port 9001 -c \"astro build\"",
+    "preview": "astro preview",
+    "astro": "astro",
+    "tina": "tinacms"
+  },
+  "dependencies": {
+    "@astrojs/check": "0.9.9",
+    "@tinacms/cli": "2.4.0",
+    "astro": "6.3.7",
+    "tinacms": "3.8.2",
+    "typescript": "5.6.3"
+  },
+  "devDependencies": {}
+}

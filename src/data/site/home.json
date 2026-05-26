@@ -1,0 +1,66 @@
+{
+  "title": "Fayssal Zeggar - Data Engineer",
+  "eyebrow": "Data Engineer | Snowflake, Python, SQL",
+  "headline": "Fayssal Zeggar",
+  "lead": "I turn regulated manufacturing data into reliable datasets, dashboards, and practical access for technical users.",
+  "summary": "I work in regulated pharmaceutical manufacturing data environments, where reliability, traceability, and practical access for technical users matter as much as the pipeline code.",
+  "actions": [
+    {
+      "label": "View projects",
+      "href": "/projects/",
+      "primary": true
+    },
+    {
+      "label": "Download resume",
+      "href": "/files/Fayssal_Zeggar_CV.pdf",
+      "primary": false
+    },
+    {
+      "label": "Contact",
+      "href": "/contact/",
+      "primary": false
+    }
+  ],
+  "stats": [
+    {
+      "value": "6,000",
+      "label": "parameters per batch"
+    },
+    {
+      "value": "30",
+      "label": "BI tables migrated"
+    },
+    {
+      "value": "60+",
+      "label": "users supported"
+    }
+  ],
+  "tags": ["Snowflake", "Python", "SQL", "ETL / ELT", "Power BI", "Dataiku"],
+  "profile": ["Toronto, Canada", "Permanent Resident", "No sponsorship required", "French / English / Spanish"],
+  "sections": [
+    {
+      "label": "What I do at work",
+      "title": "Reliable data work in a regulated environment.",
+      "body": "I structure manufacturing process data so it can be trusted, queried, and reused. I move reporting sources into Snowflake-backed models with clearer ownership and lineage, and I support users with simpler access to validated analytical data."
+    },
+    {
+      "label": "How I work",
+      "title": "Practical delivery, not isolated demos.",
+      "body": "My projects are built around traceability, data quality, and useful access patterns. I like systems where the path from raw evidence to a dashboard, API, or application can be explained clearly."
+    }
+  ],
+  "links": [
+    {
+      "label": "GitHub",
+      "href": "https://github.com/fayssalz59"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://linkedin.com/in/fzeggar"
+    },
+    {
+      "label": "Tastagram",
+      "href": "https://tastagram.fayssal-zeggar.com"
+    }
+  ]
+}

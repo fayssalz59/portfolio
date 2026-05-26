@@ -1,2 +1,8 @@
-"*.ini" 
+*.ini
 public/
+dist/
+node_modules/
+.astro/
+static/admin/
+.env
+.env.local

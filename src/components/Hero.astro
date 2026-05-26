@@ -1,0 +1,55 @@
+---
+interface Action {
+  label: string;
+  href: string;
+  primary?: boolean;
+}
+
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  eyebrow: string;
+  headline: string;
+  lead: string;
+  summary: string;
+  actions: Action[];
+  tags: string[];
+  profile: string[];
+  stats: Stat[];
+}
+
+const { eyebrow, headline, lead, summary, actions, tags, profile, stats } = Astro.props;
+---
+
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">{eyebrow}</span>
+    <h1>{headline}</h1>
+    <p class="lead">{lead}</p>
+    <p class="summary">{summary}</p>
+    <div class="actions">
+      {actions.map((action) => <a class:list={["button", action.primary && "button-primary"]} href={action.href}>{action.label}</a>)}
+    </div>
+    <div class="tag-row">
+      {tags.map((tag) => <span>{tag}</span>)}
+    </div>
+    <div class="profile-row" aria-label="Profile facts">
+      {profile.map((item) => <span>{item}</span>)}
+    </div>
+  </div>
+  <aside class="hero-panel" aria-label="Work snapshot">
+    <span class="eyebrow">Work snapshot</span>
+    <h2>Reliable data work in a regulated environment.</h2>
+    <div class="stat-grid">
+      {stats.map((stat) => (
+        <div>
+          <strong>{stat.value}</strong>
+          <span>{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  </aside>
+</section>

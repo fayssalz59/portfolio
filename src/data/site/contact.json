@@ -1,0 +1,33 @@
+{
+  "title": "Contact",
+  "eyebrow": "Open to data engineering conversations",
+  "headline": "Let's talk about data platforms, analytics, and practical delivery.",
+  "lead": "I am based in Toronto and available for data engineering opportunities that involve Snowflake, Python, SQL, analytics enablement, and governed data platforms.",
+  "summary": "For fast replies, LinkedIn or email are the best ways to reach me.",
+  "profile": ["Toronto, Canada", "Permanent Resident", "No sponsorship required", "French / English / Spanish"],
+  "links": [
+    {
+      "label": "Email",
+      "href": "mailto:fayssal.zeggar@laposte.net"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://linkedin.com/in/fzeggar"
+    },
+    {
+      "label": "GitHub",
+      "href": "https://github.com/fayssalz59"
+    },
+    {
+      "label": "Resume",
+      "href": "/files/Fayssal_Zeggar_CV.pdf"
+    }
+  ],
+  "sections": [
+    {
+      "label": "Focus",
+      "title": "Data engineering roles with real platform ownership.",
+      "body": "I am especially interested in teams that care about reliable pipelines, clear data models, analytics consumers, and the operational discipline around data products."
+    }
+  ]
+}

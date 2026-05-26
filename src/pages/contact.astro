@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import contact from "../data/site/contact.json";
+---
+
+<BaseLayout title="Contact | Fayssal Zeggar" description={contact.lead}>
+  <section class="page-hero">
+    <span class="eyebrow">{contact.eyebrow}</span>
+    <h1>{contact.headline}</h1>
+    <p class="lead">{contact.lead}</p>
+    <p class="summary">{contact.summary}</p>
+  </section>
+
+  <section class="section contact-grid">
+    <div class="contact-card">
+      <span class="eyebrow">Direct contact</span>
+      <h2>Best ways to reach me.</h2>
+      <div class="actions">
+        {contact.links.map((link) => <a class="button" href={link.href}>{link.label}</a>)}
+      </div>
+    </div>
+    <div class="contact-card">
+      <span class="eyebrow">{contact.sections[0].label}</span>
+      <h2>{contact.sections[0].title}</h2>
+      <p>{contact.sections[0].body}</p>
+      <div class="profile-row">
+        {contact.profile.map((item) => <span>{item}</span>)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

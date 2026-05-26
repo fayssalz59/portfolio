@@ -1,0 +1,52 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import home from "../data/site/home.json";
+
+const projects = (await getCollection("projects"))
+  .filter((project) => project.data.featured)
+  .sort((a, b) => a.data.weight - b.data.weight);
+
+const projectSlug = (id: string) => id.replace(/\.mdx?$/, "");
+---
+
+<BaseLayout title={home.title} description={home.lead}>
+  <Hero
+    eyebrow={home.eyebrow}
+    headline={home.headline}
+    lead={home.lead}
+    summary={home.summary}
+    actions={home.actions}
+    tags={home.tags}
+    profile={home.profile}
+    stats={home.stats}
+  />
+
+  <section class="section">
+    <SectionHeader label="Portfolio proof" title="Two projects that show the platform, not only the output." body="The goal is to make the engineering path visible: ingestion, modeling, validation, orchestration, serving, and product surfaces." />
+    <div class="project-grid">
+      {projects.map((project) => (
+        <ProjectCard
+          title={project.data.title}
+          summary={project.data.summary}
+          href={`/projects/${projectSlug(project.id)}/`}
+          projectType={project.data.projectType}
+          tech={project.data.tech}
+        />
+      ))}
+    </div>
+  </section>
+
+  <section class="section split-section">
+    {home.sections.map((section) => (
+      <article class="content-panel">
+        <span class="eyebrow">{section.label}</span>
+        <h2>{section.title}</h2>
+        <p>{section.body}</p>
+      </article>
+    ))}
+  </section>
+</BaseLayout>

@@ -1,0 +1,21 @@
+---
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/projects/" },
+  { label: "Contact", href: "/contact/" },
+  { label: "Resume", href: "/files/Fayssal_Zeggar_CV.pdf" },
+];
+---
+
+<header class="site-header">
+  <nav class="nav-shell" aria-label="Main navigation">
+    <a class="brand" href="/">
+      <span>Fayssal Zeggar</span>
+    </a>
+    <div class="nav-links">
+      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+      <a href="https://github.com/fayssalz59" target="_blank" rel="noreferrer">GitHub</a>
+      <a class="nav-pill" href="https://tastagram.fayssal-zeggar.com" target="_blank" rel="noreferrer">Tastagram</a>
+    </div>
+  </nav>
+</header>

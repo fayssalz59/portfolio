@@ -1,0 +1,59 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.id.replace(/\.mdx?$/, "") },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${project.data.title} | Fayssal Zeggar`} description={project.data.description}>
+  <section class="page-hero">
+    <span class="eyebrow">{project.data.projectType}</span>
+    <h1>{project.data.title}</h1>
+    <p class="lead">{project.data.summary}</p>
+    <div class="actions">
+      {project.data.links.map((link) => <a class="button" href={link.href}>{link.label}</a>)}
+    </div>
+  </section>
+
+  <section class="section project-layout">
+    <article class="content-panel">
+      <span class="eyebrow">Problem</span>
+      <h2>{project.data.problem}</h2>
+      <p>{project.data.solution}</p>
+      <p>{project.data.result}</p>
+    </article>
+    <aside class="content-panel">
+      <span class="eyebrow">Architecture</span>
+      <h2>{project.data.architectureTitle}</h2>
+      <p>{project.data.architectureSummary}</p>
+      <ol class="architecture">
+        {project.data.architecture.map((step) => <li>{step}</li>)}
+      </ol>
+    </aside>
+  </section>
+
+  <section class="section">
+    <div class="project-grid">
+      {project.data.skills.map((skill) => (
+        <article class="content-panel">
+          <span class="eyebrow">Skill</span>
+          <h3>{skill.name}</h3>
+          <p>{skill.detail}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <article class="project-body">
+    <Content />
+  </article>
+</BaseLayout>

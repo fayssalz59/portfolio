@@ -1,0 +1,63 @@
+fragment SiteParts on Site {
+  __typename
+  title
+  eyebrow
+  headline
+  lead
+  summary
+  actions {
+    __typename
+    label
+    href
+    primary
+  }
+  stats {
+    __typename
+    value
+    label
+  }
+  tags
+  profile
+  sections {
+    __typename
+    label
+    title
+    body
+  }
+  links {
+    __typename
+    label
+    href
+  }
+}
+
+fragment ProjectParts on Project {
+  __typename
+  title
+  description
+  summary
+  featured
+  weight
+  projectType
+  github
+  demo
+  technical
+  problem
+  solution
+  result
+  tech
+  architectureTitle
+  architectureSummary
+  architecture
+  skills {
+    __typename
+    name
+    detail
+  }
+  links {
+    __typename
+    label
+    href
+  }
+  body
+}
